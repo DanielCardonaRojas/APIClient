@@ -12,6 +12,12 @@ This is a work in progress (not battle tested).
 github "DanielCardonaRojas/APIClient" ~> 1.0.0
 ```
 
+## Cocoapods
+
+```shell
+pod 'APIClient', :git => 'https://github.com/DanielCardonaRojas/APIClient', :tag => '1.0.0', :branch => 'master'
+```
+
 # PromiseKit Integration
 
 Integrating PromiseKit can be done through the following extension: 
