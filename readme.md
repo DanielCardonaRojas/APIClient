@@ -18,6 +18,58 @@ github "DanielCardonaRojas/APIClient" ~> 1.0.0
 pod 'APIClient', :git => 'https://github.com/DanielCardonaRojas/APIClient', :tag => '1.0.0', :branch => 'master'
 ```
 
+# Usage
+
+1. Create a client object pointing to some base url
+
+```swift
+lazy var client: APIClient = {
+	let configuration = URLSessionConfiguration.default
+	let client = APIClient(baseURL: "https://jsonplaceholder.typicode.com", configuration: configuration)
+	return client
+}()
+```
+
+2. Define a declerative API
+
+```swift
+struct Todo: Codable {
+    let title: String
+    let completed: Bool
+}
+
+enum API {
+    enum Todos {
+        static func get() -> Endpoint<Todo> {
+            return Endpoint<Todo>(method: .get, path: "/todos/1")
+        }
+    }
+}
+```
+
+3. Consume the API (Comes with Callback and combine API), refer to the section below to integrate with PromiseKit or RxSwift
+
+```swift
+// Callback API
+client.request(endpoint, success: { item in
+	print("\(item)")
+}, fail: { error in
+	print("Error \(error.localizedDescription)")
+})
+
+// Combine API
+let publisher: AnyPublisher<Todo, Error>? = client.request(endpoint)
+
+self.cancellable = publisher?.sink(receiveCompletion: { completion in
+	if case let .failure(error) = completion {
+		print("Error \(error.localizedDescription)")
+	}
+}, receiveValue: { value in
+	print("\(value)")
+})
+```
+
+
 # PromiseKit Integration
 
 Integrating PromiseKit can be done through the following extension: 

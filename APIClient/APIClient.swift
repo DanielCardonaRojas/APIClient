@@ -19,7 +19,7 @@ public protocol URLResponseCapable {
 
 public class APIClient {
     
-    private var baseURL: URL?
+    internal var baseURL: URL?
     lazy var session: URLSession = {
         return URLSession(configuration: .default)
     }()
@@ -75,7 +75,7 @@ public class APIClient {
 
 
 extension URLRequest {
-    mutating func addQueryItems(_ items: [URLQueryItem]) {
+    public mutating func addQueryItems(_ items: [URLQueryItem]) {
         guard let url = self.url, items.count > 0 else {
             return
         }

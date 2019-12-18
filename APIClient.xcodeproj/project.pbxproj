@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B9B8F17923AA6FF000122FFC /* APIClient+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B8F17823AA6FF000122FFC /* APIClient+Combine.swift */; };
 		B9C906452294651E00460067 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C906442294651E00460067 /* AppDelegate.swift */; };
 		B9C906472294651E00460067 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C906462294651E00460067 /* ViewController.swift */; };
 		B9C9064A2294651E00460067 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9C906482294651E00460067 /* Main.storyboard */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B9B8F17823AA6FF000122FFC /* APIClient+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Combine.swift"; sourceTree = "<group>"; };
 		B9C906422294651E00460067 /* APIClientSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APIClientSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9C906442294651E00460067 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B9C906462294651E00460067 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				B9ED9568229366F600FD1A2D /* Info.plist */,
 				B9ED957E2293673200FD1A2D /* APIClient.swift */,
 				B9ED95802293674700FD1A2D /* Endpoint.swift */,
+				B9B8F17823AA6FF000122FFC /* APIClient+Combine.swift */,
 			);
 			path = APIClient;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				B9ED95832293677400FD1A2D /* ParameterEncoding.swift in Sources */,
 				B9ED95812293674700FD1A2D /* Endpoint.swift in Sources */,
 				B9ED957F2293673200FD1A2D /* APIClient.swift in Sources */,
+				B9B8F17923AA6FF000122FFC /* APIClient+Combine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +359,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = APIClientSample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -372,6 +377,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = APIClientSample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

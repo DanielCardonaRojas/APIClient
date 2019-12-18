@@ -8,6 +8,7 @@
 
 import UIKit
 import APIClient
+import Combine
 
 class ViewController: UIViewController {
 
@@ -16,15 +17,29 @@ class ViewController: UIViewController {
         let client = APIClient(baseURL: "https://jsonplaceholder.typicode.com", configuration: configuration)
         return client
     }()
+
+    var cancellable: AnyCancellable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let endpoint = API.Todos.get()
-        
+
+        // Callback API
         client.request(endpoint, success: { item in
             print("\(item)")
         }, fail: { error in
             print("Error \(error.localizedDescription)")
+        })
+
+        // Combine API
+        let publisher: AnyPublisher<Todo, Error>? = client.request(endpoint)
+
+        self.cancellable = publisher?.sink(receiveCompletion: { completion in
+            if case let .failure(error) = completion {
+                print("Error \(error.localizedDescription)")
+            }
+        }, receiveValue: { value in
+            print("\(value)")
         })
     }
 
