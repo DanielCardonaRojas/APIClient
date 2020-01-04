@@ -9,13 +9,18 @@ This is a work in progress (not battle tested).
 ## Carthage
 
 ```shell 
-github "DanielCardonaRojas/APIClient" ~> 1.0.0
+github "DanielCardonaRojas/APIClient" ~> 1.0.1
 ```
 
 ## Cocoapods
 
 ```shell
-pod 'APIClient', :git => 'https://github.com/DanielCardonaRojas/APIClient', :tag => '1.0.0', :branch => 'master'
+pod 'APIClient', :git => 'https://github.com/DanielCardonaRojas/APIClient', :tag => '1.0.1', :branch => 'master'
+```
+
+## SwiftPM
+```shell
+.package(url: "https://github.com/DanielCardonaRojas/APIClient", .upToNextMajor(from: "1.0.0"))
 ```
 
 # Usage
