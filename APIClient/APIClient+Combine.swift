@@ -9,6 +9,7 @@
 import Foundation
 import Combine
 
+@available(OSX 10.15, *)
 @available(iOS 13.0, *)
 extension APIClient {
     public func request<Response, T>(_ requestConvertible: T,
