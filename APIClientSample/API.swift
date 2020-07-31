@@ -16,7 +16,7 @@ struct Todo: Codable {
 enum API {
     enum Todos {
         static func get() -> Endpoint<Todo> {
-            return Endpoint<Todo>(method: .get, path: "/todos/1")
+            return Endpoint<Todo>(method: .get, path: "/todos/1", { $0 })
         }
     }
 }

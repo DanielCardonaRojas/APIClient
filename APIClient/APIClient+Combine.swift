@@ -18,12 +18,7 @@ extension APIClient {
                               baseUrl: URL? = nil) -> AnyPublisher<Response, Error>?
         where T: URLResponseCapable & URLRequestConvertible, T.Result == Response {
 
-            guard let base = baseUrl ?? self.baseURL else {
-                return nil
-            }
-
-
-            var httpRequest = try! requestConvertible.asURLRequest(baseURL: base)
+            var httpRequest = try! requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
             let additionalQueryItems = queryParameters?.map({ (k, v) in URLQueryItem(name: k, value: v) }) ?? []
             httpRequest.allHTTPHeaderFields = headers
             httpRequest.addQueryItems(additionalQueryItems)
@@ -31,10 +26,14 @@ extension APIClient {
 
             let publisher = session.dataTaskPublisher(for: httpRequest)
 
-            let result = publisher.tryMap({ data, response in
-                return try requestConvertible.handle(data: data)
+            return publisher
+                .tryMap({ data, response in
+                    let httpResponse = response as! HTTPURLResponse
+                    if httpResponse.isOK {
+                        return try requestConvertible.handle(data: data)
+                    } else {
+                        throw NetworkError(statusCode: httpResponse.statusCode, data: data)
+                    }
                 }).eraseToAnyPublisher()
-
-            return result
     }
 }
