@@ -32,6 +32,32 @@ class APIClientTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
     }
 
+    func testBadStatusCodeIsTransformedIntoErrorForCombinePublisher()  {
+        let request = RequestBuilder.get("")
+        let expectation  = XCTestExpectation()
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockURLProtocol.self]
+        let client = APIClient(baseURL: "", configuration: configuration)
+
+        MockURLProtocol.requestHandler = { request in
+            (HTTPURLResponse.fakeResponseFrom(statusCode: 401), nil)
+        }
+
+        let endpoint = Endpoint(builder: request, decode: { $0 })
+
+        let publisher = client.request(endpoint)
+        let cancellable = publisher?.receive(on: RunLoop.main).sink(receiveCompletion: { completion in
+            if case .failure = completion {
+                expectation.fulfill()
+            }
+        }, receiveValue: { _ in
+
+        })
+
+        wait(for: [expectation], timeout: 2.0)
+        cancellable?.cancel()
+    }
+
     func testDefiningBaseUrlInEndpointOverridesTheGloballyConfigureForClient() {
         let request = RequestBuilder.get("/error/401").baseURL("https://jsonplaceholder.typicode.com")
         let expectation  = XCTestExpectation()
