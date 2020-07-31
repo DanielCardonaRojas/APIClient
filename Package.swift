@@ -15,5 +15,8 @@ let package = Package(
             name: "APIClient",
             dependencies: [],
 			path: "APIClient"),
+        .testTarget(
+        name: "APIClientTests", dependencies: ["APIClient"],
+        path: "./APIClientTests"),
     ]
 )

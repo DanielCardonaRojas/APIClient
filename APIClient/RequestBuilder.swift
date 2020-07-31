@@ -9,7 +9,18 @@ import Foundation
 
 public typealias Path = String
 
-public class RequestBuilder {
+public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertible {
+    public var debugDescription: String {
+        let payload = body.flatMap { String(data: $0, encoding: .utf8) } ?? ""
+        return "\(description) \n \(payload)"
+    }
+
+    public var description: String {
+        "\(method.rawValue) \(path)"
+    }
+
+    public private(set) var baseURL: String?
+
     public enum Method: String {
         case get = "GET"
         case post = "POST"
@@ -68,6 +79,11 @@ public class RequestBuilder {
 
     // MARK: - Builders
 
+    public func baseURL(_ string: String) -> RequestBuilder {
+        self.baseURL = URL(string: string)?.absoluteString
+        return self
+    }
+
     public func body(_ body: Data) -> RequestBuilder {
         self.body = body
         return self
@@ -81,14 +97,14 @@ public class RequestBuilder {
 
     public func formUrlBody(_ params: [String: String], encoding: Encoding) -> RequestBuilder {
         let formUrlData: String? = params.map { (k, v) in
-                        let escapedKey =
-                            k.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? k
+            let escapedKey =
+                k.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? k
 
-                        let escapedValue =
-                            v.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? v
+            let escapedValue =
+                v.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? v
 
-                        return "\(escapedKey)=\(escapedValue)"
-                    }.joined(separator: "&")
+            return "\(escapedKey)=\(escapedValue)"
+        }.joined(separator: "&")
 
         let data = formUrlData?.data(using: .utf8)
 
@@ -96,12 +112,8 @@ public class RequestBuilder {
         return addHeader("Content-Type", value: Encoding.formUrlEncoded.mimeType)
     }
 
-    public func headers(_ headers: Headers) -> RequestBuilder {
-        self.headers = headers
-        return self
-    }
-
     public func addHeader(_ header: String, value: String) -> RequestBuilder {
+        if headers == nil { headers = [:] }
         self.headers?[header] = value
         return self
     }
@@ -111,15 +123,17 @@ public class RequestBuilder {
         return self
     }
 
-    public func addQuery(_ params: QueryParams) -> RequestBuilder {
-        queryParameters?.merge(params, uniquingKeysWith: { (k1, k2) in k1 })
+    public func addQuery(_ query: String, value: String) -> RequestBuilder {
+        if queryParameters == nil { queryParameters = [:] }
+        queryParameters?[query] = value
         return self
     }
 }
 
 extension RequestBuilder: URLRequestConvertible {
-    public func asURLRequest(baseURL: URL) throws -> URLRequest {
-        var urlComponents = URLComponents(string: baseURL.absoluteString)
+    public func asURLRequest(baseURL: URL?) throws -> URLRequest {
+        let urlString = self.baseURL ?? baseURL?.absoluteString
+        var urlComponents = URLComponents(string: urlString ?? "")
         let path = urlComponents.map { $0.path + self.path } ?? self.path
         urlComponents?.path = path
 
@@ -131,10 +145,10 @@ extension RequestBuilder: URLRequestConvertible {
         var request = URLRequest(url: urlComponents!.url!)
         request.httpMethod = method.rawValue
 
-        self.headers?.forEach({ header, value in request.setValue(value, forHTTPHeaderField: header) })
+        self.headers?.forEach({ header, value in request.setValue(value, forHTTPHeaderField: header)
+        })
 
         request.httpBody = self.body
         return request
     }
 }
-
