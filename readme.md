@@ -1,7 +1,18 @@
 # API Client
 
+![APIClientTests](https://github.com/DanielCardonaRojas/APIClient/workflows/APIClientTests/badge.svg)
+![](https://img.shields.io/github/v/tag/DanielCardonaRojas/APIClient)
+
 A simple networking abstraction inspired by: http://kean.github.io/post/api-client
 This is a work in progress (not battle tested).
+
+## Features
+
+- Provides RequestBuilder easily create your requests
+- Declarative definition of endpoints
+- Define your endpoints mostly with relative paths to a base URL.
+- Easily adaptable to use with common reactive frameworks (RxSwift, PromiseKit)  via  extensions
+- Comes with Combine support.
 
 
 # Installation

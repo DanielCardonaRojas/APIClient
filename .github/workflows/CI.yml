@@ -1,0 +1,13 @@
+name: APIClientTests
+on:
+  push:
+
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run tests
+      run: xcodebuild clean test -project 'APIClient.xcodeproj' -scheme 'APIClient' -destination "platform=iOS Simulator,name=iPhone 11,OS=latest"

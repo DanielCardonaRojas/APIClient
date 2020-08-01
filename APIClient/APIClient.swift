@@ -13,12 +13,22 @@ public struct NetworkError: Error {
     let data: Data?
 }
 
+/**
+ Protocol for anything that can be converted into a standart URLRequest
+ - Parameter baseURL: An optional baseURL to overwrite the URLRequests
+ */
 public protocol URLRequestConvertible {
     func asURLRequest(baseURL: URL?) throws -> URLRequest
 }
 
+/**
+ Protocol  requirements for all types that can transform data into a specified type.
+ */
 public protocol URLResponseCapable {
+    /// The type that the implementer can  parse Data into.
     associatedtype Result
+
+    /// The Data parsing function
     func handle(data: Data) throws -> Result
 }
 
@@ -54,7 +64,6 @@ public class APIClient {
         fail: @escaping (Error) -> Void
     ) -> URLSessionDataTask?
     where T: URLResponseCapable, T: URLRequestConvertible, T.Result == Response {
-        print(">>>Request")
         do {
             var httpRequest = try requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
 
@@ -62,11 +71,9 @@ public class APIClient {
                 httpRequest.addValue(value, forHTTPHeaderField: header)
             }
 
-            print(">>>Task")
             let task: URLSessionDataTask = session.dataTask(with: httpRequest) {
                 (data: Data?, response: URLResponse?, error: Error?) in
 
-                print(">>>Callback")
                 if let data = data, let httpResponse = response as? HTTPURLResponse {
                     if !httpResponse.isOK {
                         let statusCoreError = NetworkError(statusCode: httpResponse.statusCode, data: data)

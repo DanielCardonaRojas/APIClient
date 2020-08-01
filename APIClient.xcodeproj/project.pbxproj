@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B973CC7224D448CE00F8BBAA /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B973CC7124D448CE00F8BBAA /* MockURLProtocol.swift */; };
+		B973CC7524D46FF800F8BBAA /* posts.json in Resources */ = {isa = PBXBuildFile; fileRef = B973CC7324D46D8200F8BBAA /* posts.json */; };
 		B979E7A6248E86D0000164B5 /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B979E7A5248E86D0000164B5 /* RequestBuilder.swift */; };
 		B9B8F17923AA6FF000122FFC /* APIClient+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B8F17823AA6FF000122FFC /* APIClient+Combine.swift */; };
 		B9C906452294651E00460067 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C906442294651E00460067 /* AppDelegate.swift */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		B973CC7124D448CE00F8BBAA /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
+		B973CC7324D46D8200F8BBAA /* posts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = posts.json; sourceTree = "<group>"; };
 		B979E7A5248E86D0000164B5 /* RequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
 		B9B8F17823AA6FF000122FFC /* APIClient+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Combine.swift"; sourceTree = "<group>"; };
 		B9C906422294651E00460067 /* APIClientSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APIClientSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,6 +158,7 @@
 				B9ED9572229366F700FD1A2D /* APIClientTests.swift */,
 				B9ED9574229366F700FD1A2D /* Info.plist */,
 				B973CC7124D448CE00F8BBAA /* MockURLProtocol.swift */,
+				B973CC7324D46D8200F8BBAA /* posts.json */,
 			);
 			path = APIClientTests;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B973CC7524D46FF800F8BBAA /* posts.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
