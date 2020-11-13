@@ -32,6 +32,7 @@ class APIClientTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
     }
 
+    @available(iOS 13.0, *)
     func testBadStatusCodeIsTransformedIntoErrorForCombinePublisher()  {
         let request = RequestBuilder.get("")
         let expectation  = XCTestExpectation()

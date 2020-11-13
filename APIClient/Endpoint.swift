@@ -72,21 +72,25 @@ extension Endpoint where Response: Swift.Decodable {
     public convenience init(
         method: RequestBuilder.Method,
         path: Path,
+        decoder: JSONDecoder? = nil,
         _ builder: (RequestBuilder) -> RequestBuilder
     ) {
 
         let reqBuilder = builder(RequestBuilder(method: method, path: path))
 
-        let decoder = JSONDecoder()
-        let fullISO8610Formatter = DateFormatter()
-        fullISO8610Formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        decoder.dateDecodingStrategy = .formatted(fullISO8610Formatter)
+        let jsonDecoder = decoder ?? JSONDecoder()
+        
+        if (decoder == nil) {
+            let fullISO8610Formatter = DateFormatter()
+            fullISO8610Formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            jsonDecoder.dateDecodingStrategy = .formatted(fullISO8610Formatter)
+        }
 
         self.init(builder: reqBuilder) {
             do {
-                let jsonDict = try? JSONSerialization.jsonObject(with: $0, options: [])
-                print(jsonDict)
-                return try decoder.decode(Response.self, from: $0)
+//                let jsonDict = try? JSONSerialization.jsonObject(with: $0, options: [])
+//                print(jsonDict)
+                return try jsonDecoder.decode(Response.self, from: $0)
             } catch {
                 throw error
             }
