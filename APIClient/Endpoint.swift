@@ -62,8 +62,8 @@ extension Endpoint: URLResponseCapable {
 }
 
 extension Endpoint: URLRequestConvertible {
-    public func asURLRequest(baseURL: URL?) throws -> URLRequest {
-        return try builder.asURLRequest(baseURL: baseURL)
+    public func asURLRequest(baseURL: URL?)  -> URLRequest {
+        return builder.asURLRequest(baseURL: baseURL)
     }
 }
 
@@ -73,10 +73,10 @@ extension Endpoint where Response: Swift.Decodable {
         method: RequestBuilder.Method,
         path: Path,
         decoder: JSONDecoder? = nil,
-        _ builder: (RequestBuilder) -> RequestBuilder
+        _ builder: ((RequestBuilder) -> RequestBuilder)? = nil
     ) {
 
-        let reqBuilder = builder(RequestBuilder(method: method, path: path))
+        let reqBuilder = builder?(RequestBuilder(method: method, path: path)) ?? RequestBuilder(method: method, path: path)
 
         let jsonDecoder = decoder ?? JSONDecoder()
         

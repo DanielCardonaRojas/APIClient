@@ -15,10 +15,10 @@ extension APIClient {
     public func request<Response, T>(_ requestConvertible: T,
                               additionalHeaders headers: [String: String]? = nil,
                               additionalQuery queryParameters: [String: String]? = nil,
-                              baseUrl: URL? = nil) -> AnyPublisher<Response, Error>?
+                              baseUrl: URL? = nil) -> AnyPublisher<Response, Error>
         where T: URLResponseCapable & URLRequestConvertible, T.Result == Response {
 
-            var httpRequest = try! requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
+            var httpRequest = requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
             let additionalQueryItems = queryParameters?.map({ (k, v) in URLQueryItem(name: k, value: v) }) ?? []
             httpRequest.allHTTPHeaderFields = headers
             httpRequest.addQueryItems(additionalQueryItems)

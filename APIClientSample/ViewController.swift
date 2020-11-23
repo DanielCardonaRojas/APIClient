@@ -14,7 +14,8 @@ class ViewController: UIViewController {
 
     lazy var client: APIClient = {
         let configuration = URLSessionConfiguration.default
-        let client = APIClient(baseURL: "https://jsonplaceholder.typicode.com", configuration: configuration)
+        let url = URL(string: "https://jsonplaceholder.typicode.com")!
+        let client = APIClient(baseURL: url, configuration: configuration)
         return client
     }()
 
