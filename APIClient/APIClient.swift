@@ -18,7 +18,7 @@ public struct NetworkError: Error {
  - Parameter baseURL: An optional baseURL to overwrite the URLRequests
  */
 public protocol URLRequestConvertible {
-    func asURLRequest(baseURL: URL?) throws -> URLRequest
+    func asURLRequest(baseURL: URL?) -> URLRequest
 }
 
 /**
@@ -32,24 +32,32 @@ public protocol URLResponseCapable {
     func handle(data: Data) throws -> Result
 }
 
+/// A flexible http client decoupled from request building and response handling
 public class APIClient {
 
-    internal var baseURL: URL?
+    internal var baseURL: URL
     var additionalHeaders = [String: String]()
     lazy var session: URLSession = {
         return URLSession(configuration: .default)
     }()
 
-    public init(baseURL: String, configuration: URLSessionConfiguration? = nil) {
+    public init(baseURL: URL, configuration: URLSessionConfiguration? = nil) {
+        self.baseURL = baseURL
         if let config = configuration {
             self.session = URLSession(configuration: config)
         }
-        self.baseURL = URL(string: baseURL)
+    }
+    
+    public convenience init?(baseURLString: String, configuration: URLSessionConfiguration? = nil) {
+        guard let url = URL(string: baseURLString) else {
+            return nil
+        }
+        self.init(baseURL: url)
     }
 
-    public init(baseURL: String, urlSession: URLSession) {
+    public init(baseURL: URL, urlSession: URLSession) {
+        self.baseURL = baseURL
         self.session = urlSession
-        self.baseURL = URL(string: baseURL)
     }
 
     public func additionalHeaders(_ headers: [String: String]) {
@@ -57,30 +65,38 @@ public class APIClient {
     }
 
     @discardableResult
+    /**
+     Executes an http request.
+     
+     - Parameter requestConvertible: Object conforming to URLResponseCapable & URLRequestConvertible
+     - Parameter baseUrl: Ovewrite the base url for this request.
+     - Parameter success: Callback for when response is as expected.
+     - Parameter fail: Callback for when status code is not in 200 range, failed to parse or other exception has ocurred.
+     
+     */
     public func request<Response, T>(
         _ requestConvertible: T,
         baseUrl: URL? = nil,
         success: @escaping (Response) -> Void,
         fail: @escaping (Error) -> Void
-    ) -> URLSessionDataTask?
-    where T: URLResponseCapable, T: URLRequestConvertible, T.Result == Response {
-        do {
-            var httpRequest = try requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
-
+    ) -> URLSessionDataTask
+        where T: URLResponseCapable, T: URLRequestConvertible, T.Result == Response {
+            var httpRequest = requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
+            
             for (header, value) in additionalHeaders {
                 httpRequest.addValue(value, forHTTPHeaderField: header)
             }
-
+            
             let task: URLSessionDataTask = session.dataTask(with: httpRequest) {
                 (data: Data?, response: URLResponse?, error: Error?) in
-
+                
                 if let data = data, let httpResponse = response as? HTTPURLResponse {
                     if !httpResponse.isOK {
                         let statusCoreError = NetworkError(statusCode: httpResponse.statusCode, data: data)
                         fail(statusCoreError)
                         return
                     }
-
+                    
                     do {
                         let parsedResponse = try requestConvertible.handle(data: data)
                         success(parsedResponse)
@@ -91,16 +107,11 @@ public class APIClient {
                     fail(error)
                 }
             }
-
+            
             task.resume()
             return task
-        } catch (let encodingError) {
-            fail(encodingError)
-        }
-
-        return nil
     }
-
+    
 }
 
 extension URLRequest {

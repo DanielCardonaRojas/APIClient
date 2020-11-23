@@ -9,6 +9,7 @@ import Foundation
 
 public typealias Path = String
 
+/// A builder pattern to easily create http requests
 public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertible {
     public var debugDescription: String {
         let payload = body.flatMap { String(data: $0, encoding: .utf8) } ?? ""
@@ -56,22 +57,26 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
     }
 
     // MARK: - Factories
+    /// Creates a request builder for a POST request
     public static func post(_ path: Path) -> RequestBuilder {
         let fixedPath = path.hasPrefix("/") ? path : "/" + path
         return RequestBuilder(method: .post, path: fixedPath)
 
     }
 
+    /// Creates a request builder for a GET request
     public static func get(_ path: Path) -> RequestBuilder {
         return RequestBuilder(method: .get, path: path)
 
     }
 
+    /// Creates a request builder for a PUT request
     public static func put(_ path: Path) -> RequestBuilder {
         return RequestBuilder(method: .put, path: path)
 
     }
 
+    /// Creates a request builder for a PATCH request
     public static func patch(_ path: Path) -> RequestBuilder {
         return RequestBuilder(method: .put, path: path)
 
@@ -79,22 +84,27 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
 
     // MARK: - Builders
 
+    /// Sets the base url for the formed request
+    /// Note: base url should not have a trailing / since this is added in paths.
     public func baseURL(_ string: String) -> RequestBuilder {
         self.baseURL = URL(string: string)?.absoluteString
         return self
     }
 
+    /// Adds body content from raw data.
     public func body(_ body: Data) -> RequestBuilder {
         self.body = body
         return self
     }
 
+    /// Adds a json payload to body given a codable value.
     public func jsonBody<T: Encodable>(_ payload: T) -> RequestBuilder {
         let data = try? JSONEncoder().encode(payload)
         self.body = data
         return addHeader("Content-Type", value: Encoding.jsonEncoded.mimeType)
     }
 
+    /// Add a body payload encoded a form-url
     public func formUrlBody(_ params: [String: String], encoding: Encoding) -> RequestBuilder {
         let formUrlData: String? = params.map { (k, v) in
             let escapedKey =
@@ -112,17 +122,20 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
         return addHeader("Content-Type", value: Encoding.formUrlEncoded.mimeType)
     }
 
+    /// Adds header to request
     public func addHeader(_ header: String, value: String) -> RequestBuilder {
         if headers == nil { headers = [:] }
         self.headers?[header] = value
         return self
     }
 
+    /// Adds multiple query paramater pairs to url
     public func query(_ query: QueryParams) -> RequestBuilder {
         self.queryParameters = query
         return self
     }
 
+    ///Adds a single query parameter to url
     public func addQuery(_ query: String, value: String) -> RequestBuilder {
         if queryParameters == nil { queryParameters = [:] }
         queryParameters?[query] = value
@@ -131,7 +144,7 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
 }
 
 extension RequestBuilder: URLRequestConvertible {
-    public func asURLRequest(baseURL: URL?) throws -> URLRequest {
+    public func asURLRequest(baseURL: URL?) -> URLRequest {
         let urlString = self.baseURL ?? baseURL?.absoluteString
         var urlComponents = URLComponents(string: urlString ?? "")
         let path = urlComponents.map { $0.path + self.path } ?? self.path
