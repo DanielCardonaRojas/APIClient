@@ -2,6 +2,7 @@
 
 ![APIClientTests](https://github.com/DanielCardonaRojas/APIClient/workflows/APIClientTests/badge.svg)
 ![](https://img.shields.io/github/v/tag/DanielCardonaRojas/APIClient)
+[![codecov](https://codecov.io/gh/DanielCardonaRojas/APIClient/branch/master/graph/badge.svg?token=SJPX8AG809)](https://codecov.io/gh/DanielCardonaRojas/APIClient)
 
 A simple networking abstraction inspired by: http://kean.github.io/post/api-client
 This is a work in progress (not battle tested).
@@ -11,15 +12,14 @@ This is a work in progress (not battle tested).
 - Provides RequestBuilder easily create your requests
 - Declarative definition of endpoints
 - Define your endpoints mostly with relative paths to a base URL.
-- Easily adaptable to use with common reactive frameworks (RxSwift, PromiseKit)  via  extensions
+- Easily adaptable to use with common reactive frameworks (RxSwift, PromiseKit) via extensions
 - Comes with Combine support.
-
 
 # Installation
 
 ## Carthage
 
-```shell 
+```shell
 github "DanielCardonaRojas/APIClient" ~> 1.0.1
 ```
 
@@ -30,6 +30,7 @@ pod 'APIClient', :git => 'https://github.com/DanielCardonaRojas/APIClient', :tag
 ```
 
 ## SwiftPM
+
 ```shell
 .package(url: "https://github.com/DanielCardonaRojas/APIClient", .upToNextMajor(from: "1.0.0"))
 ```
@@ -85,10 +86,9 @@ self.cancellable = publisher?.sink(receiveCompletion: { completion in
 })
 ```
 
-
 # PromiseKit Integration
 
-Integrating PromiseKit can be done through the following extension: 
+Integrating PromiseKit can be done through the following extension:
 
 ```swift
 import PromiseKit
@@ -112,23 +112,21 @@ extension APIClient {
 
 ```
 
-
 # RxSwift Integration
 
 Use this extension
-
 
 ```shell
 import RxSwift
 
 extension APIClient {
-    
+
     func request<Response, T>(_ requestConvertible: T,
                               additionalHeaders headers: [String: String]? = nil,
                               additionalQuery queryParameters: [String: String]? = nil,
                               baseUrl: URL? = nil) -> Observable<T.Result>
         where T: URLResponseCapable, T: URLRequestConvertible, T.Result == Response {
-            
+
             return Observable.create({ observer in
                 let dataTask = self.request(requestConvertible, additionalHeaders: headers, additionalQuery: queryParameters, baseUrl: baseUrl, success: { response in
                     observer.onNext(response)
@@ -136,7 +134,7 @@ extension APIClient {
                 }, fail: {error in
                     observer.onError(error)
                 })
-                
+
                 return Disposables.create {
                     dataTask?.cancel()
                 }
@@ -144,5 +142,3 @@ extension APIClient {
     }
 }
 ```
-
-

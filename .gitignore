@@ -1,6 +1,7 @@
 ## OS X Finder
 .DS_Store
 
+*.coverage.txt
 ## Build generated
 build/
 DerivedData

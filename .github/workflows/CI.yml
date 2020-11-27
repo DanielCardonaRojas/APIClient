@@ -8,6 +8,10 @@ jobs:
   build:
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Run tests
-      run: xcodebuild clean test -project 'APIClient.xcodeproj' -scheme 'APIClient' -destination "platform=iOS Simulator,name=iPhone 11,OS=latest"
+      - uses: actions/checkout@v1
+      - name: Run tests
+        run: xcodebuild clean test -project 'APIClient.xcodeproj' -scheme 'APIClient' -destination "platform=iOS Simulator,name=iPhone 11,OS=latest" -enableCodeCoverage 'YES'
+      - name: Publish to Codecov
+        run: bash <(curl -s https://codecov.io/bash)
+        env:
+          CODECOV_TOKEN: 95348eee-42e2-4789-81c2-407909600e82
