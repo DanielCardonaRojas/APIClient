@@ -5,7 +5,6 @@
 [![codecov](https://codecov.io/gh/DanielCardonaRojas/APIClient/branch/master/graph/badge.svg?token=SJPX8AG809)](https://codecov.io/gh/DanielCardonaRojas/APIClient)
 
 A simple networking abstraction inspired by: http://kean.github.io/post/api-client
-This is a work in progress (not battle tested).
 
 ## Features
 
