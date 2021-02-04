@@ -11,12 +11,17 @@ import Foundation
 /// Typed high level abstraction of a service request and response
 ///
 /// This class is parametrized over the response type expectation
+/// The request configuration associated with this Endpoint is encoded in the RequestBuilder.
+
 public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStringConvertible {
     public var debugDescription: String {
         return "\(builder.debugDescription) expecting: \(Response.self)"
     }
 
+    /// The closure responsible for decoding an http response.
     public let decode: (Data) throws -> Response
+    
+    /// The request builder instance used to configure the HTTP request.
     public var builder: RequestBuilder
 
     public var description: String {
@@ -27,7 +32,7 @@ public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStrin
      Constructs a new Endpoint
 
      - Parameter builder: An http request builder
-     - Parameter decoder: Closure used to decode Data into the expcted type.
+     - Parameter decoder: Closure used to decode Data into the expected response type.
      */
     public init(builder: RequestBuilder, decode: @escaping (Data) throws -> Response) {
         self.builder = builder
@@ -35,9 +40,12 @@ public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStrin
     }
 
     /**
-     Transform Endpoint into a new one with modify response.
+     Transform Endpoint into a new one
 
-     - Parameter f: Closure used to modify the reponse type.
+      - Parameter f: Closure used to modify the reponse type.
+     
+      This is handy when you want to select a portion of the http response, e.g when the data of interest is
+      enveloped by meta data.
 
      */
     public func map<N>(_ f: @escaping ((Response) throws -> N)) -> Endpoint<N> {
@@ -47,6 +55,10 @@ public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStrin
         return Endpoint<N>(builder: self.builder, decode: newDecodingFuntion)
     }
 
+    /**
+     Modify the underlying request builder ad-hoc
+     - Parameter f: A function that further configures the http request
+     */
     public func modifyRequest(_ f: (RequestBuilder) -> RequestBuilder) {
         self.builder = f(builder)
     }
@@ -56,6 +68,7 @@ public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStrin
 // MARK: - URLRequestConvertible
 extension Endpoint: URLResponseCapable {
     public typealias Result = Response
+    
     public func handle(data: Data) throws -> Response {
         return try self.decode(data)
     }
@@ -69,6 +82,14 @@ extension Endpoint: URLRequestConvertible {
 
 // MARK: - Conviniences
 extension Endpoint where Response: Swift.Decodable {
+    /**
+    Creates and endpoint specification
+     
+    - Parameter method: The HTTP method (GET, POST, PUT, PATCH)
+    - Parameter path: A path relative to the APIClient base url that will be executing this request.
+    - Parameter decoder: A custom JSONDecoder (usefull for handling different date formats)
+    - Parameter builder: A closure mutating and returning a new RequestBuilder
+     */
     public convenience init(
         method: RequestBuilder.Method,
         path: Path,

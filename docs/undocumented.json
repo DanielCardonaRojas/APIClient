@@ -1,0 +1,131 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/APIClient.swift",
+      "line": 11,
+      "symbol": "NetworkError",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/APIClient.swift",
+      "line": 22,
+      "symbol": "URLRequestConvertible.asURLRequest(baseURL:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/APIClient.swift",
+      "line": 94,
+      "symbol": "APIClient.request(_:baseUrl:success:fail:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/APIClient.swift",
+      "line": 135,
+      "symbol": "URLRequest.addQueryItems(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/Endpoint.swift",
+      "line": 78,
+      "symbol": "Endpoint.asURLRequest(baseURL:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 10,
+      "symbol": "Path",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 25,
+      "symbol": "RequestBuilder.baseURL",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 27,
+      "symbol": "RequestBuilder.Method",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 28,
+      "symbol": "RequestBuilder.Method.get",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 29,
+      "symbol": "RequestBuilder.Method.post",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 30,
+      "symbol": "RequestBuilder.Method.put",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 31,
+      "symbol": "RequestBuilder.Method.patch",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 32,
+      "symbol": "RequestBuilder.Method.delete",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 35,
+      "symbol": "RequestBuilder.Encoding",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 36,
+      "symbol": "RequestBuilder.Encoding.formUrlEncoded",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 36,
+      "symbol": "RequestBuilder.Encoding.jsonEncoded",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 47,
+      "symbol": "RequestBuilder.Headers",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/decaroj/development/ios_projects/APIClient/APIClient/RequestBuilder.swift",
+      "line": 48,
+      "symbol": "RequestBuilder.QueryParams",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/decaroj/development/ios_projects/APIClient"
+}

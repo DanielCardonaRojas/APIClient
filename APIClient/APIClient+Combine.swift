@@ -12,6 +12,21 @@ import Combine
 @available(OSX 10.15, *)
 @available(iOS 13.0, *)
 extension APIClient {
+    /**
+     Executes an http request.
+
+     
+     - Parameter requestConvertible: Object conforming to URLResponseCapable & URLRequestConvertible (usually Endpoint)
+     - Parameter baseUrl: Ovewrite the base url for this request.
+     - Returns: A publisher of type AnyPublisher<Response, Error>
+     
+     Note: status codes > 400 will be transformed into a NetworkError type
+     This makes no assumptions on what thread this should be called on. Usually just remember to call with:
+         
+            apiClient.recieve(on: RunLoop.main).sink(...)
+
+     
+     */
     public func request<Response, T>(_ requestConvertible: T,
                               additionalHeaders headers: [String: String]? = nil,
                               additionalQuery queryParameters: [String: String]? = nil,
