@@ -15,6 +15,10 @@ This is a work in progress (not battle tested).
 - Easily adaptable to use with common reactive frameworks (RxSwift, PromiseKit) via extensions
 - Comes with Combine support.
 
+## Documentation
+
+Checkout the docs [here](https://danielcardonarojas.github.io/APIClient)
+
 # Installation
 
 ## Carthage

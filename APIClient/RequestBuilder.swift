@@ -10,6 +10,8 @@ import Foundation
 public typealias Path = String
 
 /// A builder pattern to easily create http requests
+///
+/// Note: The base URL will be injected by the APIClient so only path if configured here.
 public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertible {
     public var debugDescription: String {
         let payload = body.flatMap { String(data: $0, encoding: .utf8) } ?? ""
@@ -98,6 +100,8 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
     }
 
     /// Adds a json payload to body given a codable value.
+    ///
+    /// Note this will also set the content-type to application/json
     public func jsonBody<T: Encodable>(_ payload: T) -> RequestBuilder {
         let data = try? JSONEncoder().encode(payload)
         self.body = data
@@ -135,7 +139,7 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
         return self
     }
 
-    ///Adds a single query parameter to url
+    /// Adds a single query parameter to url
     public func addQuery(_ query: String, value: String) -> RequestBuilder {
         if queryParameters == nil { queryParameters = [:] }
         queryParameters?[query] = value
@@ -144,6 +148,7 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
 }
 
 extension RequestBuilder: URLRequestConvertible {
+    /// Transforms the RequestBuilder into a URLRequest
     public func asURLRequest(baseURL: URL?) -> URLRequest {
         let urlString = self.baseURL ?? baseURL?.absoluteString
         var urlComponents = URLComponents(string: urlString ?? "")
