@@ -139,3 +139,10 @@ struct Post: Codable {
     let title: String
     let body: String
 }
+
+struct PostDetail: Codable {
+    let id: Int
+    let title: String
+    let body: String
+    let comments: [String]
+}

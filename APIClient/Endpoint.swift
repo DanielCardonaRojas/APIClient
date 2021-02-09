@@ -80,7 +80,43 @@ extension Endpoint: URLRequestConvertible {
     }
 }
 
-// MARK: - Conviniences
+// MARK: - Smart constructors
+extension Endpoint where Response == Void {
+    public convenience init(
+        method: RequestBuilder.Method,
+        path: Path,
+        _ builder: ((RequestBuilder) -> RequestBuilder)? = nil
+    ) {
+        let reqBuilder = builder?(RequestBuilder(method: method, path: path)) ?? RequestBuilder(method: method, path: path)
+
+        self.init(builder: reqBuilder) { _ in
+            return
+        }
+    }
+}
+
+extension Endpoint where Response == [String: Any] {
+    public convenience init(
+        method: RequestBuilder.Method,
+        path: Path,
+        _ builder: ((RequestBuilder) -> RequestBuilder)? = nil
+    ) {
+
+        let reqBuilder = builder?(RequestBuilder(method: method, path: path)) ?? RequestBuilder(method: method, path: path)
+
+        self.init(builder: reqBuilder) {
+            do {
+                guard let jsonDict = try JSONSerialization.jsonObject(with: $0, options: []) as? [String: Any] else {
+                    throw DecodingError.typeMismatch(Response.self, DecodingError.Context.init(codingPath: [], debugDescription: "Not castable into [String: Any]"))
+                }
+                return jsonDict
+            } catch {
+                throw error
+            }
+        }
+    }
+}
+
 extension Endpoint where Response: Swift.Decodable {
     /**
     Creates and endpoint specification
