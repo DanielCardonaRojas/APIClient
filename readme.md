@@ -13,6 +13,7 @@ A simple networking abstraction inspired by: http://kean.github.io/post/api-clie
 - Define your endpoints mostly with relative paths to a base URL.
 - Easily adaptable to use with common reactive frameworks (RxSwift, PromiseKit) via extensions
 - Comes with Combine support.
+- Chain multiple requests easily
 
 ## Documentation
 
@@ -87,6 +88,52 @@ self.cancellable = publisher?.sink(receiveCompletion: { completion in
 }, receiveValue: { value in
 	print("\(value)")
 })
+```
+
+## Chaining multiple request
+
+Alternatively to using the regular combine API of the APIClient class, APIClientPublisher
+creates a custom publisher from a APIClient and allows to easily chain multiple endpoints creating
+a sequence dependent requests.
+
+
+```swift
+let endpoint: Endpoint<[Post]> = Endpoint(method: .get, path: "/posts")
+
+APIClientPublisher(client: client, endpoint: endpoint).chain({
+    Endpoint<PostDetail>(method: .get, path: "/posts/\($0.first!.id)")
+}).receive(on: RunLoop.main)
+.sink(receiveCompletion: { _ in
+
+}, receiveValue: { _ in
+    expectation.fulfill()
+}).store(in: &disposables)
+```
+
+## Retrying a request 
+
+There is no built interceptors in this package but retrying requests and other related effects
+can be accomplished, using combine built in facilities.
+
+Retrying requests can be accomplished using `tryCatch` and has been documented by many authors,
+give [this](https://www.donnywals.com/retrying-a-network-request-with-a-delay-in-combine/) a read for more details
+
+
+```swift
+  // Copied from https://www.donnywals.com/retrying-a-network-request-with-a-delay-in-combine/
+  .tryCatch({ error -> AnyPublisher<(data: Data, response: URLResponse), Error> in
+    print("In the tryCatch")
+
+    switch error {
+    case DataTaskError.rateLimitted, DataTaskError.serverBusy:
+      return dataTaskPublisher
+        .delay(for: 3, scheduler: DispatchQueue.global())
+        .eraseToAnyPublisher()
+    default:
+      throw error
+    }
+  })
+  .retry(2)
 ```
 
 # PromiseKit Integration

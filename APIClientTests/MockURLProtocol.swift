@@ -16,7 +16,6 @@ import Foundation
         return true
     }
 
-
     override class func canInit(with task: URLSessionTask) -> Bool {
         return true
     }
@@ -56,7 +55,6 @@ import Foundation
     }
 }
 
-
 extension HTTPURLResponse {
     static func fakeResponseFrom(statusCode: Int, data: Data? = nil) -> (HTTPURLResponse, Data?) {
         let  response  =  HTTPURLResponse(url: URL(string: "https://jsonplaceholder.typicode.com")!, statusCode: statusCode, httpVersion: nil, headerFields: nil)!
@@ -64,7 +62,7 @@ extension HTTPURLResponse {
         return (response, data)
     }
 
-    static func fakeResponseFrom(file: String, in bundle: Bundle? =  nil, statusCode: Int = 200) -> (HTTPURLResponse, Data?)   {
+    static func fakeResponseFrom(file: String, in bundle: Bundle? =  nil, statusCode: Int = 200) -> (HTTPURLResponse, Data?) {
         let  response  =  HTTPURLResponse(url: URL(string: "https://jsonplaceholder.typicode.com")!, statusCode: statusCode, httpVersion: nil, headerFields: nil)!
 
         let fileBundle = bundle ?? Bundle(for: MockURLProtocol.self)
@@ -74,7 +72,6 @@ extension HTTPURLResponse {
                 return (response, nil)
         }
 
-        let contents = try? FileManager.default.contentsOfDirectory(atPath: url.path)
         let data = try? Data(contentsOf: URL(fileURLWithPath: url.path))
         return (response, data)
     }

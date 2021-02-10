@@ -10,6 +10,10 @@
 		B973CC7224D448CE00F8BBAA /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B973CC7124D448CE00F8BBAA /* MockURLProtocol.swift */; };
 		B973CC7524D46FF800F8BBAA /* posts.json in Resources */ = {isa = PBXBuildFile; fileRef = B973CC7324D46D8200F8BBAA /* posts.json */; };
 		B979E7A6248E86D0000164B5 /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B979E7A5248E86D0000164B5 /* RequestBuilder.swift */; };
+		B9ACE93F25D30E6100B3DAF3 /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ACE93E25D30E6100B3DAF3 /* EndpointTests.swift */; };
+		B9ACE94425D34B1200B3DAF3 /* APIClientPublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ACE94325D34B1200B3DAF3 /* APIClientPublisherTests.swift */; };
+		B9ACE94925D34E0E00B3DAF3 /* post_detail.json in Resources */ = {isa = PBXBuildFile; fileRef = B9ACE94825D34E0E00B3DAF3 /* post_detail.json */; };
+		B9ACE96125D424D600B3DAF3 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ACE96025D424D600B3DAF3 /* Post.swift */; };
 		B9B8F17923AA6FF000122FFC /* APIClient+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B8F17823AA6FF000122FFC /* APIClient+Combine.swift */; };
 		B9C906452294651E00460067 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C906442294651E00460067 /* AppDelegate.swift */; };
 		B9C906472294651E00460067 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C906462294651E00460067 /* ViewController.swift */; };
@@ -39,6 +43,10 @@
 		B973CC7124D448CE00F8BBAA /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		B973CC7324D46D8200F8BBAA /* posts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = posts.json; sourceTree = "<group>"; };
 		B979E7A5248E86D0000164B5 /* RequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
+		B9ACE93E25D30E6100B3DAF3 /* EndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointTests.swift; sourceTree = "<group>"; };
+		B9ACE94325D34B1200B3DAF3 /* APIClientPublisherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientPublisherTests.swift; sourceTree = "<group>"; };
+		B9ACE94825D34E0E00B3DAF3 /* post_detail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post_detail.json; sourceTree = "<group>"; };
+		B9ACE96025D424D600B3DAF3 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		B9B8F17823AA6FF000122FFC /* APIClient+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Combine.swift"; sourceTree = "<group>"; };
 		B9C906422294651E00460067 /* APIClientSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APIClientSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9C906442294651E00460067 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +95,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B9ACE96525D424DC00B3DAF3 /* TestModels */ = {
+			isa = PBXGroup;
+			children = (
+				B9ACE96025D424D600B3DAF3 /* Post.swift */,
+			);
+			path = TestModels;
+			sourceTree = "<group>";
+		};
 		B9C906432294651E00460067 /* APIClientSample */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,10 +171,14 @@
 		B9ED9571229366F700FD1A2D /* APIClientTests */ = {
 			isa = PBXGroup;
 			children = (
+				B9ACE94825D34E0E00B3DAF3 /* post_detail.json */,
 				B9ED9572229366F700FD1A2D /* APIClientTests.swift */,
 				B9ED9574229366F700FD1A2D /* Info.plist */,
 				B973CC7124D448CE00F8BBAA /* MockURLProtocol.swift */,
 				B973CC7324D46D8200F8BBAA /* posts.json */,
+				B9ACE93E25D30E6100B3DAF3 /* EndpointTests.swift */,
+				B9ACE94325D34B1200B3DAF3 /* APIClientPublisherTests.swift */,
+				B9ACE96525D424DC00B3DAF3 /* TestModels */,
 			);
 			path = APIClientTests;
 			sourceTree = "<group>";
@@ -202,6 +222,7 @@
 				B9ED9560229366F600FD1A2D /* Sources */,
 				B9ED9561229366F600FD1A2D /* Frameworks */,
 				B9ED9562229366F600FD1A2D /* Resources */,
+				B9ACE95C25D422B600B3DAF3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -294,11 +315,32 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9ACE94925D34E0E00B3DAF3 /* post_detail.json in Resources */,
 				B973CC7524D46FF800F8BBAA /* posts.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B9ACE95C25D422B600B3DAF3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B9C9063E2294651E00460067 /* Sources */ = {
@@ -327,7 +369,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9ED9573229366F700FD1A2D /* APIClientTests.swift in Sources */,
+				B9ACE93F25D30E6100B3DAF3 /* EndpointTests.swift in Sources */,
+				B9ACE94425D34B1200B3DAF3 /* APIClientPublisherTests.swift in Sources */,
 				B973CC7224D448CE00F8BBAA /* MockURLProtocol.swift in Sources */,
+				B9ACE96125D424D600B3DAF3 /* Post.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

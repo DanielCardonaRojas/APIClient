@@ -20,7 +20,7 @@ public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStrin
 
     /// The closure responsible for decoding an http response.
     public let decode: (Data) throws -> Response
-    
+
     /// The request builder instance used to configure the HTTP request.
     public var builder: RequestBuilder
 
@@ -68,19 +68,55 @@ public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStrin
 // MARK: - URLRequestConvertible
 extension Endpoint: URLResponseCapable {
     public typealias Result = Response
-    
+
     public func handle(data: Data) throws -> Response {
         return try self.decode(data)
     }
 }
 
 extension Endpoint: URLRequestConvertible {
-    public func asURLRequest(baseURL: URL?)  -> URLRequest {
+    public func asURLRequest(baseURL: URL?) -> URLRequest {
         return builder.asURLRequest(baseURL: baseURL)
     }
 }
 
-// MARK: - Conviniences
+// MARK: - Smart constructors
+extension Endpoint where Response == Void {
+    public convenience init(
+        method: RequestBuilder.Method,
+        path: Path,
+        _ builder: ((RequestBuilder) -> RequestBuilder)? = nil
+    ) {
+        let reqBuilder = builder?(RequestBuilder(method: method, path: path)) ?? RequestBuilder(method: method, path: path)
+
+        self.init(builder: reqBuilder) { _ in
+            return
+        }
+    }
+}
+
+extension Endpoint where Response == [String: Any] {
+    public convenience init(
+        method: RequestBuilder.Method,
+        path: Path,
+        _ builder: ((RequestBuilder) -> RequestBuilder)? = nil
+    ) {
+
+        let reqBuilder = builder?(RequestBuilder(method: method, path: path)) ?? RequestBuilder(method: method, path: path)
+
+        self.init(builder: reqBuilder) {
+            do {
+                guard let jsonDict = try JSONSerialization.jsonObject(with: $0, options: []) as? [String: Any] else {
+                    throw DecodingError.typeMismatch(Response.self, DecodingError.Context.init(codingPath: [], debugDescription: "Not castable into [String: Any]"))
+                }
+                return jsonDict
+            } catch {
+                throw error
+            }
+        }
+    }
+}
+
 extension Endpoint where Response: Swift.Decodable {
     /**
     Creates and endpoint specification
@@ -100,8 +136,8 @@ extension Endpoint where Response: Swift.Decodable {
         let reqBuilder = builder?(RequestBuilder(method: method, path: path)) ?? RequestBuilder(method: method, path: path)
 
         let jsonDecoder = decoder ?? JSONDecoder()
-        
-        if (decoder == nil) {
+
+        if decoder == nil {
             let fullISO8610Formatter = DateFormatter()
             fullISO8610Formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
             jsonDecoder.dateDecodingStrategy = .formatted(fullISO8610Formatter)
