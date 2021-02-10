@@ -16,7 +16,7 @@ public struct NetworkError: Error {
 /**
  Protocol for anything that can be converted into a standart URLRequest
  
- - Parameter baseURL: An optional baseURL to overwrite the URLRequests
+ - Parameter baseURL: An optional baseURL which passed by the APIClient to create the full url of the URLRequest
  */
 public protocol URLRequestConvertible {
     func asURLRequest(baseURL: URL?) -> URLRequest
@@ -28,7 +28,7 @@ public protocol URLRequestConvertible {
  This is used to especify how parse the response of a http request.
  */
 public protocol URLResponseCapable {
-    /// The type that the implementer can  parse Data into.
+    /// A type representing the output of the parsing operation
     associatedtype Result
 
     /// The Data parsing function that tries to transform Data into a the corresponding associated type
@@ -41,7 +41,7 @@ public protocol URLResponseCapable {
 public class APIClient {
 
     internal var baseURL: URL
-    
+
     /// Additional headers attached to every request
     var additionalHeaders = [String: String]()
     lazy var session: URLSession = {
@@ -59,7 +59,7 @@ public class APIClient {
             self.session = URLSession(configuration: config)
         }
     }
-    
+
     /// Creates a client from a base url string.
     ///
     /// Note: Will return nil if not well formed URL.
@@ -69,7 +69,7 @@ public class APIClient {
         }
         self.init(baseURL: url, configuration: configuration)
     }
-    
+
     /// Creates a APIClient from base URL and user provided URLSession
     public init(baseURL: URL, urlSession: URLSession) {
         self.baseURL = baseURL
@@ -99,39 +99,39 @@ public class APIClient {
     ) -> URLSessionDataTask
         where T: URLResponseCapable, T: URLRequestConvertible, T.Result == Response {
             var httpRequest = requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
-            
+
             for (header, value) in additionalHeaders {
                 httpRequest.addValue(value, forHTTPHeaderField: header)
             }
-            
-            let task: URLSessionDataTask = session.dataTask(with: httpRequest) {
-                (data: Data?, response: URLResponse?, error: Error?) in
-                
+
+            let task: URLSessionDataTask = session.dataTask(with: httpRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+
                 if let data = data, let httpResponse = response as? HTTPURLResponse {
                     if !httpResponse.isOK {
                         let statusCoreError = NetworkError(statusCode: httpResponse.statusCode, data: data)
                         fail(statusCoreError)
                         return
                     }
-                    
+
                     do {
                         let parsedResponse = try requestConvertible.handle(data: data)
                         success(parsedResponse)
-                    } catch (let parsingError) {
+                    } catch let parsingError {
                         fail(parsingError)
                     }
                 } else if let error = error {
                     fail(error)
                 }
             }
-            
+
             task.resume()
             return task
     }
-    
+
 }
 
 extension URLRequest {
+    /// Mutate the calling request by appending the provided URLQueryItem's
     public mutating func addQueryItems(_ items: [URLQueryItem]) {
         guard let url = self.url, items.count > 0 else {
             return
@@ -144,6 +144,7 @@ extension URLRequest {
 }
 
 extension HTTPURLResponse {
+    /// Validates status code to be in a range of success 200 >=  statusCode < 400
     var isOK: Bool {
         statusCode >= 200 && statusCode < 400
     }

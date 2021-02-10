@@ -20,7 +20,7 @@ public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStrin
 
     /// The closure responsible for decoding an http response.
     public let decode: (Data) throws -> Response
-    
+
     /// The request builder instance used to configure the HTTP request.
     public var builder: RequestBuilder
 
@@ -68,14 +68,14 @@ public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStrin
 // MARK: - URLRequestConvertible
 extension Endpoint: URLResponseCapable {
     public typealias Result = Response
-    
+
     public func handle(data: Data) throws -> Response {
         return try self.decode(data)
     }
 }
 
 extension Endpoint: URLRequestConvertible {
-    public func asURLRequest(baseURL: URL?)  -> URLRequest {
+    public func asURLRequest(baseURL: URL?) -> URLRequest {
         return builder.asURLRequest(baseURL: baseURL)
     }
 }
@@ -136,8 +136,8 @@ extension Endpoint where Response: Swift.Decodable {
         let reqBuilder = builder?(RequestBuilder(method: method, path: path)) ?? RequestBuilder(method: method, path: path)
 
         let jsonDecoder = decoder ?? JSONDecoder()
-        
-        if (decoder == nil) {
+
+        if decoder == nil {
             let fullISO8610Formatter = DateFormatter()
             fullISO8610Formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
             jsonDecoder.dateDecodingStrategy = .formatted(fullISO8610Formatter)

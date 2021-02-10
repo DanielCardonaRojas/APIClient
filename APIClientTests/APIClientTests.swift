@@ -12,21 +12,21 @@ import XCTest
 class APIClientTests: XCTestCase {
     let tBaseUrl = URL(string: "google.com")!
 
-    func testBadStatusCodeIsTransformedIntoError()  {
+    func testBadStatusCodeIsTransformedIntoError() {
         let request = RequestBuilder.get("")
         let expectation  = XCTestExpectation()
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [MockURLProtocol.self]
         let client = APIClient(baseURL: tBaseUrl, configuration: configuration)
 
-        MockURLProtocol.requestHandler = { request in
+        MockURLProtocol.requestHandler = { _ in
             HTTPURLResponse.fakeResponseFrom(statusCode: 401)
         }
 
         let endpoint = Endpoint(builder: request, decode: { $0 })
 
-        client.request(endpoint, success: { value  in
-        }, fail: { error in
+        client.request(endpoint, success: { _  in
+        }, fail: { _ in
             expectation.fulfill()
         })
 
@@ -35,14 +35,14 @@ class APIClientTests: XCTestCase {
 
     @available(OSX 10.15, *)
     @available(iOS 13.0, *)
-    func testBadStatusCodeIsTransformedIntoErrorForCombinePublisher()  {
+    func testBadStatusCodeIsTransformedIntoErrorForCombinePublisher() {
         let request = RequestBuilder.get("")
         let expectation  = XCTestExpectation()
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [MockURLProtocol.self]
         let client = APIClient(baseURL: tBaseUrl, configuration: configuration)
 
-        MockURLProtocol.requestHandler = { request in
+        MockURLProtocol.requestHandler = { _ in
             HTTPURLResponse.fakeResponseFrom(statusCode: 401)
         }
 
@@ -77,13 +77,13 @@ class APIClientTests: XCTestCase {
 
         let endpoint = Endpoint(builder: request, decode: { $0 })
 
-        client.request(endpoint, success: { value  in }, fail: { error in })
+        client.request(endpoint, success: { _  in }, fail: { _ in })
 
         wait(for: [expectation], timeout: 2.0)
     }
 
     func testCanLoadJsonData() {
-        let (response, data) = HTTPURLResponse.fakeResponseFrom(file: "posts.json")
+        let (_, data) = HTTPURLResponse.fakeResponseFrom(file: "posts.json")
         XCTAssert((data?.count ?? 0) > 0)
         XCTAssert(data != nil)
     }
@@ -100,15 +100,15 @@ class APIClientTests: XCTestCase {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [MockURLProtocol.self]
 
-        MockURLProtocol.requestHandler =  { _ in
+        MockURLProtocol.requestHandler = { _ in
             HTTPURLResponse.fakeResponseFrom(file: "posts.json")
         }
 
         let client = APIClient(baseURL: tBaseUrl, configuration: configuration)
 
-        client.request(endpoint, success: { value  in
+        client.request(endpoint, success: { _  in
             expectation.fulfill()
-        }, fail: { err in
+        }, fail: { _ in
             invertedExpectation.fulfill()
         })
 
@@ -123,7 +123,7 @@ class APIClientTests: XCTestCase {
 
         MockURLProtocol.requestHandler = { _ in HTTPURLResponse.fakeResponseFrom(statusCode: 401) }
 
-        let endpoint = Endpoint(builder: RequestBuilder.get("/somePath"), decode: { data in
+        let endpoint = Endpoint(builder: RequestBuilder.get("/somePath"), decode: { _ in
             expectation.fulfill()
         })
         let client = APIClient(baseURL: tBaseUrl, configuration: configuration)
@@ -132,17 +132,4 @@ class APIClientTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
     }
 
-}
-
-struct Post: Codable {
-    let id: Int
-    let title: String
-    let body: String
-}
-
-struct PostDetail: Codable {
-    let id: Int
-    let title: String
-    let body: String
-    let comments: [String]
 }

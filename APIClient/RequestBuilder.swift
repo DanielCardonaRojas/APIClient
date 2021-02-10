@@ -24,6 +24,7 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
 
     public private(set) var baseURL: String?
 
+    /// Enumeration of HTTP Verbs
     public enum Method: String {
         case get = "GET"
         case post = "POST"
@@ -32,8 +33,11 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
         case delete = "DELETE"
     }
 
+    /// A type representing the encoding to be used for request body
     public enum Encoding {
         case formUrlEncoded, jsonEncoded
+        
+        /// The mime type assocciated with this encoding that will be placed in the Content-Type header
         var mimeType: String {
             switch self {
             case .formUrlEncoded:
@@ -107,8 +111,19 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
         self.body = data
         return addHeader("Content-Type", value: Encoding.jsonEncoded.mimeType)
     }
+    
+    /// Adds a json payload to body from a dictionary
+    ///
+    /// Note this will also set the content-type to application/json
+    public func jsonBody(dict: [String: Any]) -> RequestBuilder {
+        let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+        self.body = data
+        return addHeader("Content-Type", value: Encoding.jsonEncoded.mimeType)
+    }
 
     /// Add a body payload encoded a form-url
+    ///
+    /// Note this will also set the content-type to application/x-www-form-urlencoded
     public func formUrlBody(_ params: [String: String], encoding: Encoding) -> RequestBuilder {
         let formUrlData: String? = params.map { (k, v) in
             let escapedKey =

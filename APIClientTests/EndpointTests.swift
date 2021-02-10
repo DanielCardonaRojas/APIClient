@@ -12,8 +12,7 @@ import XCTest
 class EndpointTests: XCTestCase {
 
     func testCanDecodeEnpointExpectingVoid() throws {
-        let endpoint: Endpoint<Void> = Endpoint(method: .get, path: "/")
+//        let endpoint: Endpoint<Void> = Endpoint(method: .get, path: "/")
     }
-
 
 }

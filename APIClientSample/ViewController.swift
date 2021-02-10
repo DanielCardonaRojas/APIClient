@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     }()
 
     var cancellable: AnyCancellable?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let endpoint = API.Todos.get()
@@ -45,4 +45,3 @@ class ViewController: UIViewController {
     }
 
 }
-

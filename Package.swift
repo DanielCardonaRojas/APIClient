@@ -8,7 +8,7 @@ let package = Package(
     products: [
         .library(
             name: "APIClient",
-            targets: ["APIClient"]),
+            targets: ["APIClient"])
     ],
     targets: [
         .target(
@@ -17,6 +17,6 @@ let package = Package(
 			path: "APIClient"),
         .testTarget(
         name: "APIClientTests", dependencies: ["APIClient"],
-        path: "./APIClientTests"),
+        path: "./APIClientTests")
     ]
 )
