@@ -53,21 +53,26 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
 
     let method: Method
     let path: Path
-    private var headers: Headers?
-    private var queryParameters: QueryParams?
+    
+    public private(set) var headers: Headers?
+    public private(set) var queryParameters: QueryParams?
     private var body: Data?
 
     init(method: Method, path: Path) {
         self.method = method
-        self.path = path
+        
+        if let components = URLComponents(string: path), let params = components.queryItems {
+            self.path = components.path
+            self.queryParameters = QueryParams(uniqueKeysWithValues: params.map({ ($0.name, $0.value) }))
+        } else {
+            self.path = path
+        }
     }
 
     // MARK: - Factories
     /// Creates a request builder for a POST request
     public static func post(_ path: Path) -> RequestBuilder {
-        let fixedPath = path.hasPrefix("/") ? path : "/" + path
-        return RequestBuilder(method: .post, path: fixedPath)
-
+        return RequestBuilder(method: .post, path: path)
     }
 
     /// Creates a request builder for a GET request
@@ -153,6 +158,20 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
         self.queryParameters = query
         return self
     }
+    
+    /// Adds multiple query paramater pairs to url
+    public func query(_ queryItems: [URLQueryItem]?) -> RequestBuilder {
+        guard let queryItems = queryItems else {
+            return self
+        }
+        
+        if queryParameters == nil { queryParameters = [:] }
+        
+        for query in queryItems {
+            queryParameters?[query.name] = query.value
+        }
+        return self
+    }
 
     /// Adds a single query parameter to url
     public func addQuery(_ query: String, value: String) -> RequestBuilder {
@@ -160,6 +179,7 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
         queryParameters?[query] = value
         return self
     }
+
 }
 
 extension RequestBuilder: URLRequestConvertible {

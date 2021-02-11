@@ -11,8 +11,9 @@ import XCTest
 
 class EndpointTests: XCTestCase {
 
-    func testCanDecodeEnpointExpectingVoid() throws {
-//        let endpoint: Endpoint<Void> = Endpoint(method: .get, path: "/")
+    func testWillParsePathWithQueryParams() {
+        let endpoint = Endpoint<Void>(method: .get, path: "some/path?q=1&location=colombia")
+        XCTAssert(endpoint.builder.queryParameters?.count ?? 0 == 2)
     }
 
 }

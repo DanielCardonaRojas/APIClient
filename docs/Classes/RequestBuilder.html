@@ -17,7 +17,7 @@
     <a title="RequestBuilder Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">APIClient 1.0.1 Docs</a> (69% documented)</p>
+        <p><a href="../index.html">APIClient 1.0.1 Docs</a> (72% documented)</p>
         <p class="header-right">
           <form role="search" action="../search.json">
             <input type="text" placeholder="Search documentation" data-typeahead>
@@ -77,6 +77,9 @@
           <li class="nav-group-name">
             <a href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/APIClientPublisher.html">APIClientPublisher</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Structs.html#/s:9APIClient12NetworkErrorV">NetworkError</a>
               </li>
@@ -204,7 +207,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Enumeration of HTTP Verbs</p>
 
                         <a href="../Classes/RequestBuilder/Method.html" class="slightly-smaller">See more</a>
                       </div>
@@ -232,7 +235,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A type representing the encoding to be used for request body</p>
 
                         <a href="../Classes/RequestBuilder/Encoding.html" class="slightly-smaller">See more</a>
                       </div>
@@ -295,6 +298,60 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">QueryParams</span> <span class="o">=</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClient14RequestBuilderC7headersSDyS2SGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/headers" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient14RequestBuilderC7headersSDyS2SGSgvp">headers</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">headers</span><span class="p">:</span> <span class="kt"><a href="../Classes/RequestBuilder.html#/s:9APIClient14RequestBuilderC7Headersa">Headers</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClient14RequestBuilderC15queryParametersSDySSypGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/queryParameters" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient14RequestBuilderC15queryParametersSDySSypGSgvp">queryParameters</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">queryParameters</span><span class="p">:</span> <span class="kt"><a href="../Classes/RequestBuilder.html#/s:9APIClient14RequestBuilderC11QueryParamsa">QueryParams</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -522,6 +579,35 @@ Note: base url should not have a trailing / since this is added in paths.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9APIClient14RequestBuilderC8jsonBody4dictACSDySSypG_tF"></a>
+                    <a name="//apple_ref/swift/Method/jsonBody(dict:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient14RequestBuilderC8jsonBody4dictACSDySSypG_tF">jsonBody(dict:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds a json payload to body from a dictionary</p>
+
+<p>Note this will also set the content-type to application/json</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">jsonBody</span><span class="p">(</span><span class="nv">dict</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">RequestBuilder</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9APIClient14RequestBuilderC11formUrlBody_8encodingACSDyS2SG_AC8EncodingOtF"></a>
                     <a name="//apple_ref/swift/Method/formUrlBody(_:encoding:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:9APIClient14RequestBuilderC11formUrlBody_8encodingACSDyS2SG_AC8EncodingOtF">formUrlBody(_:<wbr>encoding:<wbr>)</a>
@@ -533,6 +619,8 @@ Note: base url should not have a trailing / since this is added in paths.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Add a body payload encoded a form-url</p>
+
+<p>Note this will also set the content-type to application/x-www-form-urlencoded</p>
 
                       </div>
                       <div class="declaration">
@@ -603,6 +691,33 @@ Note: base url should not have a trailing / since this is added in paths.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9APIClient14RequestBuilderC5queryyACSay10Foundation12URLQueryItemVGSgF"></a>
+                    <a name="//apple_ref/swift/Method/query(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient14RequestBuilderC5queryyACSay10Foundation12URLQueryItemVGSgF">query(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds multiple query paramater pairs to url</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">query</span><span class="p">(</span><span class="n">_</span> <span class="nv">queryItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">URLQueryItem</span><span class="p">]?)</span> <span class="o">-&gt;</span> <span class="kt">RequestBuilder</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9APIClient14RequestBuilderC8addQuery_5valueACSS_SStF"></a>
                     <a name="//apple_ref/swift/Method/addQuery(_:value:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:9APIClient14RequestBuilderC8addQuery_5valueACSS_SStF">addQuery(_:<wbr>value:<wbr>)</a>
@@ -659,7 +774,7 @@ Note: base url should not have a trailing / since this is added in paths.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://github.com/DanielCardonaRojas/APIClient" target="_blank" rel="external">Daniel Cardona</a>. All rights reserved. (Last updated: 2021-02-04)</p>
+          <p>&copy; 2021 <a class="link" href="https://github.com/DanielCardonaRojas/APIClient" target="_blank" rel="external">Daniel Cardona</a>. All rights reserved. (Last updated: 2021-02-11)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

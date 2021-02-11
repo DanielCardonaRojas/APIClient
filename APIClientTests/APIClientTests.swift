@@ -32,6 +32,17 @@ class APIClientTests: XCTestCase {
 
         wait(for: [expectation], timeout: 2.0)
     }
+    
+    func testCanParsePathAndQueryThroughURLComponents() {
+        guard let components = URLComponents(string: "some/path?q=1&location=colombia") else {
+            XCTFail()
+            return
+        }
+        XCTAssert(components.query != nil)
+        XCTAssert(components.queryItems?.count ?? 0 == 2)
+        XCTAssert(components.host == nil)
+    }
+    
 
     @available(OSX 10.15, *)
     @available(iOS 13.0, *)
