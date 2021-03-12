@@ -29,18 +29,22 @@ public protocol URLRequestConvertible {
  */
 public protocol URLResponseCapable {
     /// A type representing the output of the parsing operation
-    associatedtype Result
+    associatedtype ResponseType
 
     /// The Data parsing function that tries to transform Data into a the corresponding associated type
     ///
     /// This function can fail by throwing an error that will propagate when executing a request.
-    func handle(data: Data) throws -> Result
+    func handle(data: Data) throws -> ResponseType
 }
 
 /// A flexible http client decoupled from request building and response handling
 public class APIClient {
 
     internal var baseURL: URL
+    
+    /// An object conforming to MockClient which can ihijack request and return
+    /// the expected response or errors prematurily
+    var hijacker: ClientHijacker?
 
     /// Additional headers attached to every request
     var additionalHeaders = [String: String]()
@@ -91,15 +95,34 @@ public class APIClient {
      - Parameter fail: Callback for when status code is not in 200 range, failed to parse or other exception has ocurred.
      
      */
-    public func request<Response, T>(
-        _ requestConvertible: T,
+    public func request<T>(
+        _ requestConvertible: Endpoint<T>,
         baseUrl: URL? = nil,
-        success: @escaping (Response) -> Void,
-        fail: @escaping (Error) -> Void
-    ) -> URLSessionDataTask
-        where T: URLResponseCapable, T: URLRequestConvertible, T.Result == Response {
+        success: @escaping (T) -> Void,
+        fail: @escaping (Error) -> Void) -> URLSessionDataTask {
+        
+        request(requestConvertible, handler: { result in
+            switch result {
+            case .failure(let error):
+                fail(error)
+            case .success(let response):
+                success(response)
+            }
+        })
+        
+    }
+    
+    public func request<T>(
+        _ requestConvertible: Endpoint<T>,
+        baseUrl: URL? = nil,
+        handler: @escaping (Result<T, Error>) -> Void
+    ) -> URLSessionDataTask {
             var httpRequest = requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
-
+        
+            if let hijackingClient = hijacker, let match = hijackingClient.hijack(endpoint: requestConvertible) {
+                handler(match)
+            }
+            
             for (header, value) in additionalHeaders {
                 httpRequest.addValue(value, forHTTPHeaderField: header)
             }
@@ -108,19 +131,19 @@ public class APIClient {
 
                 if let data = data, let httpResponse = response as? HTTPURLResponse {
                     if !httpResponse.isOK {
-                        let statusCoreError = NetworkError(statusCode: httpResponse.statusCode, data: data)
-                        fail(statusCoreError)
+                        let statusCode = NetworkError(statusCode: httpResponse.statusCode, data: data)
+                        handler(.failure(statusCode))
                         return
                     }
 
                     do {
                         let parsedResponse = try requestConvertible.handle(data: data)
-                        success(parsedResponse)
+                        handler(.success(parsedResponse))
                     } catch let parsingError {
-                        fail(parsingError)
+                        handler(.failure(parsingError))
                     }
                 } else if let error = error {
-                    fail(error)
+                    handler(.failure(error))
                 }
             }
 

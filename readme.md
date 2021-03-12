@@ -14,6 +14,7 @@ A simple networking abstraction inspired by: http://kean.github.io/post/api-clie
 - Easily adaptable to use with common reactive frameworks (RxSwift, PromiseKit) via extensions
 - Comes with Combine support.
 - Chain multiple requests easily
+- Mocks responses easily
 
 ## Documentation
 
@@ -96,7 +97,6 @@ Alternatively to using the regular combine API of the APIClient class, APIClient
 creates a custom publisher from a APIClient and allows to easily chain multiple endpoints creating
 a sequence dependent requests.
 
-
 ```swift
 let endpoint: Endpoint<[Post]> = Endpoint(method: .get, path: "/posts")
 
@@ -110,14 +110,13 @@ APIClientPublisher(client: client, endpoint: endpoint).chain({
 }).store(in: &disposables)
 ```
 
-## Retrying a request 
+## Retrying a request
 
 There is no built interceptors in this package but retrying requests and other related effects
 can be accomplished, using combine built in facilities.
 
 Retrying requests can be accomplished using `tryCatch` and has been documented by many authors,
 give [this](https://www.donnywals.com/retrying-a-network-request-with-a-delay-in-combine/) a read for more details
-
 
 ```swift
   // Copied from https://www.donnywals.com/retrying-a-network-request-with-a-delay-in-combine/
@@ -134,6 +133,25 @@ give [this](https://www.donnywals.com/retrying-a-network-request-with-a-delay-in
     }
   })
   .retry(2)
+```
+
+## Mocking Responses
+
+It is easy to add fake responses that will bypass any http calls.
+
+```swift
+let client: APIClient = ...
+
+
+APIClientHijacker.sharedInstance.registerSubstitute(User.fake(), matchingRequestBy: .any)
+
+client.hijacker = APIClientHijacker.sharedInstance
+
+
+let endpoint = Endpoint<User>(method: .get, path: "/")
+
+client.request(endpoint) // Will return fake User
+
 ```
 
 # PromiseKit Integration

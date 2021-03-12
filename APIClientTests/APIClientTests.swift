@@ -11,6 +11,13 @@ import XCTest
 
 class APIClientTests: XCTestCase {
     let tBaseUrl = URL(string: "google.com")!
+    var client: APIClient!
+    
+    override func setUp() {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockURLProtocol.self]
+        client = APIClient(baseURL: tBaseUrl, configuration: configuration)
+    }
 
     func testBadStatusCodeIsTransformedIntoError() {
         let request = RequestBuilder.get("")
@@ -49,9 +56,6 @@ class APIClientTests: XCTestCase {
     func testBadStatusCodeIsTransformedIntoErrorForCombinePublisher() {
         let request = RequestBuilder.get("")
         let expectation  = XCTestExpectation()
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.protocolClasses = [MockURLProtocol.self]
-        let client = APIClient(baseURL: tBaseUrl, configuration: configuration)
 
         MockURLProtocol.requestHandler = { _ in
             HTTPURLResponse.fakeResponseFrom(statusCode: 401)
@@ -75,9 +79,6 @@ class APIClientTests: XCTestCase {
     func testDefiningBaseUrlInEndpointOverridesTheGloballyConfigureForClient() {
         let request = RequestBuilder.get("/error/401").baseURL("https://jsonplaceholder.typicode.com")
         let expectation  = XCTestExpectation()
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.protocolClasses = [MockURLProtocol.self]
-        let client = APIClient(baseURL: tBaseUrl, configuration: configuration)
 
         MockURLProtocol.requestHandler = { request in
             if request.url?.absoluteString == "https://jsonplaceholder.typicode.com/error/401" {
@@ -108,14 +109,10 @@ class APIClientTests: XCTestCase {
         let expectation  = XCTestExpectation()
         let invertedExpectation = XCTestExpectation()
         invertedExpectation.isInverted = true
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.protocolClasses = [MockURLProtocol.self]
 
         MockURLProtocol.requestHandler = { _ in
             HTTPURLResponse.fakeResponseFrom(file: "posts.json")
         }
-
-        let client = APIClient(baseURL: tBaseUrl, configuration: configuration)
 
         client.request(endpoint, success: { _  in
             expectation.fulfill()
@@ -129,18 +126,45 @@ class APIClientTests: XCTestCase {
     func testWhenErrorDoesNotCallParsingHandler() {
         let expectation = XCTestExpectation()
         expectation.isInverted = true
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.protocolClasses = [MockURLProtocol.self]
 
         MockURLProtocol.requestHandler = { _ in HTTPURLResponse.fakeResponseFrom(statusCode: 401) }
 
         let endpoint = Endpoint(builder: RequestBuilder.get("/somePath"), decode: { _ in
             expectation.fulfill()
         })
-        let client = APIClient(baseURL: tBaseUrl, configuration: configuration)
+
         client.request(endpoint, success: { _ in }, fail: { _ in })
 
         wait(for: [expectation], timeout: 2.0)
     }
+    
+    func testReturnsResponseOfRegisterMockClientHijacker() {
+        let expectation = XCTestExpectation()
+        let noHttpExpectation = XCTestExpectation(description: "Does not execute real request")
+        noHttpExpectation.isInverted = true
+        
+        APIClientHijacker.sharedInstance.registerSubstitute(User.fake(), matchingRequestBy: .any)
+        
+        client.hijacker = APIClientHijacker.sharedInstance
+        
+        let endpoint = Endpoint<User>(method: .get, path: "/")
+        
+        MockURLProtocol.requestHandler = { _ in
+            noHttpExpectation.fulfill()
+            return HTTPURLResponse.fakeResponseFrom(statusCode: 401)
+        }
+        
+        client.request(endpoint, success: { response in
+            if (response == User.fake()) {
+                expectation.fulfill()
+            }
+        }, fail: { error in
+            
+        })
+
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
 
 }
+
