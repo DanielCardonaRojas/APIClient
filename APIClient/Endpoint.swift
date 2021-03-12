@@ -67,7 +67,7 @@ public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStrin
 
 // MARK: - URLRequestConvertible
 extension Endpoint: URLResponseCapable {
-    public typealias Result = Response
+    public typealias ResponseType = Response
 
     public func handle(data: Data) throws -> Response {
         return try self.decode(data)

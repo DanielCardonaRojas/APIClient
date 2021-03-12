@@ -27,6 +27,8 @@
 		B9ED9575229366F700FD1A2D /* APIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = B9ED9567229366F600FD1A2D /* APIClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B9ED957F2293673200FD1A2D /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ED957E2293673200FD1A2D /* APIClient.swift */; };
 		B9ED95812293674700FD1A2D /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ED95802293674700FD1A2D /* Endpoint.swift */; };
+		C49519E325FB97BF0057532E /* APIClientHijacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49519E225FB97BF0057532E /* APIClientHijacker.swift */; };
+		C49519E825FB9BDB0057532E /* MockAPIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49519E725FB9BDB0057532E /* MockAPIClientTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +68,8 @@
 		B9ED9574229366F700FD1A2D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B9ED957E2293673200FD1A2D /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		B9ED95802293674700FD1A2D /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		C49519E225FB97BF0057532E /* APIClientHijacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientHijacker.swift; sourceTree = "<group>"; };
+		C49519E725FB9BDB0057532E /* MockAPIClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClientTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +168,7 @@
 				B9ED95802293674700FD1A2D /* Endpoint.swift */,
 				B9B8F17823AA6FF000122FFC /* APIClient+Combine.swift */,
 				B979E7A5248E86D0000164B5 /* RequestBuilder.swift */,
+				C49519E225FB97BF0057532E /* APIClientHijacker.swift */,
 			);
 			path = APIClient;
 			sourceTree = "<group>";
@@ -179,6 +184,7 @@
 				B9ACE93E25D30E6100B3DAF3 /* EndpointTests.swift */,
 				B9ACE94325D34B1200B3DAF3 /* APIClientPublisherTests.swift */,
 				B9ACE96525D424DC00B3DAF3 /* TestModels */,
+				C49519E725FB9BDB0057532E /* MockAPIClientTests.swift */,
 			);
 			path = APIClientTests;
 			sourceTree = "<group>";
@@ -361,6 +367,7 @@
 				B9ED95812293674700FD1A2D /* Endpoint.swift in Sources */,
 				B9ED957F2293673200FD1A2D /* APIClient.swift in Sources */,
 				B9B8F17923AA6FF000122FFC /* APIClient+Combine.swift in Sources */,
+				C49519E325FB97BF0057532E /* APIClientHijacker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,6 +378,7 @@
 				B9ED9573229366F700FD1A2D /* APIClientTests.swift in Sources */,
 				B9ACE93F25D30E6100B3DAF3 /* EndpointTests.swift in Sources */,
 				B9ACE94425D34B1200B3DAF3 /* APIClientPublisherTests.swift in Sources */,
+				C49519E825FB9BDB0057532E /* MockAPIClientTests.swift in Sources */,
 				B973CC7224D448CE00F8BBAA /* MockURLProtocol.swift in Sources */,
 				B9ACE96125D424D600B3DAF3 /* Post.swift in Sources */,
 			);
