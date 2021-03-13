@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         return client
     }()
 
-    var cancellable: AnyCancellable?
+    var disposables = Set<AnyCancellable>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,15 +33,15 @@ class ViewController: UIViewController {
         })
 
         // Combine API
-        let publisher: AnyPublisher<Todo, Error>? = client.request(endpoint)
+        let publisher: AnyPublisher<Todo, Error> = client.request(endpoint)
 
-        self.cancellable = publisher?.sink(receiveCompletion: { completion in
+        publisher.sink(receiveCompletion: { completion in
             if case let .failure(error) = completion {
                 print("Error \(error.localizedDescription)")
             }
         }, receiveValue: { value in
             print("\(value)")
-        })
+        }).store(in: &disposables)
     }
 
 }

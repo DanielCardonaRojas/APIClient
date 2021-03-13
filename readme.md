@@ -71,24 +71,31 @@ enum API {
 
 3. Consume the API (Comes with Callback and combine API), refer to the section below to integrate with PromiseKit or RxSwift
 
+**Callback API**
+
 ```swift
-// Callback API
 client.request(endpoint, success: { item in
-	print("\(item)")
+    print("\(item)")
 }, fail: { error in
-	print("Error \(error.localizedDescription)")
+    print("Error \(error.localizedDescription)")
 })
 
+
+```
+
+**Combine API**
+
+```swift
 // Combine API
-let publisher: AnyPublisher<Todo, Error>? = client.request(endpoint)
+let publisher: AnyPublisher<Todo, Error> = client.request(endpoint)
 
-self.cancellable = publisher?.sink(receiveCompletion: { completion in
-	if case let .failure(error) = completion {
-		print("Error \(error.localizedDescription)")
-	}
+publisher.sink(receiveCompletion: { completion in
+    if case let .failure(error) = completion {
+        print("Error \(error.localizedDescription)")
+    }
 }, receiveValue: { value in
-	print("\(value)")
-})
+    print("\(value)")
+}).store(in: &disposables)
 ```
 
 ## Chaining multiple request
@@ -143,9 +150,9 @@ It is easy to add fake responses that will bypass any http calls.
 let client: APIClient = ...
 
 
-APIClientHijacker.sharedInstance.registerSubstitute(User.fake(), matchingRequestBy: .any)
+MockDataClientHijacker.sharedInstance.registerSubstitute(User.fake(), requestThatMatches: .path(#"/posts/*"#))
 
-client.hijacker = APIClientHijacker.sharedInstance
+client.hijacker = MockDataClientHijacker.sharedInstance
 
 
 let endpoint = Endpoint<User>(method: .get, path: "/")

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>URLResponseCapable Protocol Reference</title>
+    <title>ClientHijacker Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -13,8 +13,8 @@
     <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
-    <a name="//apple_ref/swift/Protocol/URLResponseCapable" class="dashAnchor"></a>
-    <a title="URLResponseCapable Protocol Reference"></a>
+    <a name="//apple_ref/swift/Protocol/ClientHijacker" class="dashAnchor"></a>
+    <a title="ClientHijacker Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">APIClient 1.0.1 Docs</a> (71% documented)</p>
@@ -29,7 +29,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">APIClient Reference</a>
         <img id="carat" src="../img/carat.png" />
-        URLResponseCapable Protocol Reference
+        ClientHijacker Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -115,17 +115,16 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>URLResponseCapable</h1>
+            <h1>ClientHijacker</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">URLResponseCapable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ClientHijacker</span></code></pre>
 
                 </div>
               </div>
-            <p>Protocol  requirements for all types that can transform data into a specified type.</p>
-
-<p>This is used to especify how parse the response of a http request.</p>
+            <p>An object that can hijack outgoing requests and return either the expected response type
+or an error bypassing the actual http request</p>
 
           </section>
           <section class="section task-group-section">
@@ -134,9 +133,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9APIClient18URLResponseCapableP12ResponseTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/ResponseType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9APIClient18URLResponseCapableP12ResponseTypeQa">ResponseType</a>
+                    <a name="/s:9APIClient14ClientHijackerP6hijack8endpoints6ResultOyqd__s5Error_pGSgAA8EndpointCyqd__G_tlF"></a>
+                    <a name="//apple_ref/swift/Method/hijack(endpoint:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient14ClientHijackerP6hijack8endpoints6ResultOyqd__s5Error_pGSgAA8EndpointCyqd__G_tlF">hijack(endpoint:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -144,43 +143,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A type representing the output of the parsing operation</p>
+                        <p>This function is handed an endpoint and should determine if it should hijack the request
+associated with it by returning its expected type or an error
+Returns: nil when doesnt bypass request.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">ResponseType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9APIClient18URLResponseCapableP6handle4data12ResponseTypeQz10Foundation4DataV_tKF"></a>
-                    <a name="//apple_ref/swift/Method/handle(data:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9APIClient18URLResponseCapableP6handle4data12ResponseTypeQz10Foundation4DataV_tKF">handle(data:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The Data parsing function that tries to transform Data into a the corresponding associated type</p>
-
-<p>This function can fail by throwing an error that will propagate when executing a request.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/URLResponseCapable.html#/s:9APIClient18URLResponseCapableP12ResponseTypeQa">ResponseType</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="n">hijack</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">endpoint</span><span class="p">:</span> <span class="kt"><a href="../Classes/Endpoint.html">Endpoint</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Result</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>

@@ -44,7 +44,7 @@ public class APIClient {
 
     /// An object conforming to MockClient which can ihijack request and return
     /// the expected response or errors prematurily
-    var hijacker: ClientHijacker?
+    public var hijacker: ClientHijacker?
 
     /// Additional headers attached to every request
     var additionalHeaders = [String: String]()

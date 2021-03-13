@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Protocols  Reference</title>
+    <title>Enumerations  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -13,8 +13,8 @@
     <script src="js/jazzy.search.js" defer></script>
   </head>
   <body>
-    <a name="//apple_ref/swift/Section/Protocols" class="dashAnchor"></a>
-    <a title="Protocols  Reference"></a>
+    <a name="//apple_ref/swift/Section/Enumerations" class="dashAnchor"></a>
+    <a title="Enumerations  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html">APIClient 1.0.1 Docs</a> (71% documented)</p>
@@ -29,7 +29,7 @@
       <p id="breadcrumbs">
         <a href="index.html">APIClient Reference</a>
         <img id="carat" src="img/carat.png" />
-        Protocols  Reference
+        Enumerations  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -115,8 +115,8 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Protocols</h1>
-            <p>The following protocols are available globally.</p>
+            <h1>Enumerations</h1>
+            <p>The following enumerations are available globally.</p>
 
           </section>
           <section class="section task-group-section">
@@ -125,9 +125,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9APIClient21URLRequestConvertibleP"></a>
-                    <a name="//apple_ref/swift/Protocol/URLRequestConvertible" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9APIClient21URLRequestConvertibleP">URLRequestConvertible</a>
+                    <a name="/s:9APIClient23RequestMatchingCriteriaO"></a>
+                    <a name="//apple_ref/swift/Enum/RequestMatchingCriteria" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient23RequestMatchingCriteriaO">RequestMatchingCriteria</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -135,93 +135,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Protocol for anything that can be converted into a standart URLRequest</p>
+                        <p>RequestMatcher represents, different ways to find matches agains a request</p>
 
-                        <a href="Protocols/URLRequestConvertible.html" class="slightly-smaller">See more</a>
+                        <a href="Enums/RequestMatchingCriteria.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">URLRequestConvertible</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>baseURL</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>An optional baseURL which passed by the APIClient to create the full url of the URLRequest</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9APIClient18URLResponseCapableP"></a>
-                    <a name="//apple_ref/swift/Protocol/URLResponseCapable" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9APIClient18URLResponseCapableP">URLResponseCapable</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Protocol  requirements for all types that can transform data into a specified type.</p>
-
-<p>This is used to especify how parse the response of a http request.</p>
-
-                        <a href="Protocols/URLResponseCapable.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">URLResponseCapable</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9APIClient14ClientHijackerP"></a>
-                    <a name="//apple_ref/swift/Protocol/ClientHijacker" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9APIClient14ClientHijackerP">ClientHijacker</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>An object that can hijack outgoing requests and return either the expected response type
-or an error bypassing the actual http request</p>
-
-                        <a href="Protocols/ClientHijacker.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ClientHijacker</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">RequestMatchingCriteria</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
 
                         </div>
                       </div>

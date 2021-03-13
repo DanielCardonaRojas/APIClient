@@ -19,7 +19,7 @@ public enum RequestMatchingCriteria: Hashable {
 
 /// An object that can hijack outgoing requests and return either the expected response type
 /// or an error bypassing the actual http request
-protocol ClientHijacker {
+public protocol ClientHijacker {
     /// This function is handed an endpoint and should determine if it should hijack the request
     /// associated with it by returning its expected type or an error
     /// Returns: nil when doesnt bypass request.
@@ -44,11 +44,11 @@ public class MockDataClientHijacker: ClientHijacker {
         }
     }
 
-    static let sharedInstance = MockDataClientHijacker()
+    public static let sharedInstance = MockDataClientHijacker()
 
     typealias RequestHijacker<T> = (RequestBuilder) throws -> T?
 
-    private init() {
+    public init() { // Is public becuase is usefull for testing
 
     }
 

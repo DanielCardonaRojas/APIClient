@@ -13,8 +13,8 @@ let package = Package(
     targets: [
         .target(
             name: "APIClient",
-            dependencies: [],
-			path: "APIClient"),
+            dependencies: [], 
+            path: "APIClient"),
         .testTarget(
         name: "APIClientTests", dependencies: ["APIClient"],
         path: "./APIClientTests")

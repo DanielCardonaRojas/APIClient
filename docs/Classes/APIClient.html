@@ -17,7 +17,7 @@
     <a title="APIClient Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">APIClient 1.0.1 Docs</a> (72% documented)</p>
+        <p><a href="../index.html">APIClient 1.0.1 Docs</a> (71% documented)</p>
         <p class="header-right">
           <form role="search" action="../search.json">
             <input type="text" placeholder="Search documentation" data-typeahead>
@@ -45,6 +45,9 @@
                 <a href="../Classes/Endpoint.html">Endpoint</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Classes/MockDataClientHijacker.html">MockDataClientHijacker</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Classes/RequestBuilder.html">RequestBuilder</a>
               </li>
               <li class="nav-group-task">
@@ -52,6 +55,14 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/RequestBuilder/Encoding.html">– Encoding</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/RequestMatchingCriteria.html">RequestMatchingCriteria</a>
               </li>
             </ul>
           </li>
@@ -67,6 +78,9 @@
             <a href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Protocols/ClientHijacker.html">ClientHijacker</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Protocols/URLRequestConvertible.html">URLRequestConvertible</a>
               </li>
               <li class="nav-group-task">
@@ -79,6 +93,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Structs/APIClientPublisher.html">APIClientPublisher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:9APIClient11MockedErrorV">MockedError</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs.html#/s:9APIClient12NetworkErrorV">NetworkError</a>
@@ -112,6 +129,34 @@
           <section class="section task-group-section">
             <div class="task-group">
               <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClientAAC8hijackerAA14ClientHijacker_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/hijacker" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClientAAC8hijackerAA14ClientHijacker_pSgvp">hijacker</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An object conforming to MockClient which can ihijack request and return
+the expected response or errors prematurily</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">hijacker</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ClientHijacker.html">ClientHijacker</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -256,9 +301,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9APIClientAAC7request_7baseUrl7success4failSo20NSURLSessionDataTaskCq__10Foundation3URLVSgyxcys5Error_pct6ResultAA18URLResponseCapablePQy_RszAA21URLRequestConvertibleR_AaOR_r0_lF"></a>
+                    <a name="/s:9APIClientAAC7request_7baseUrl7success4failSo20NSURLSessionDataTaskCAA8EndpointCyxG_10Foundation3URLVSgyxcys5Error_pctlF"></a>
                     <a name="//apple_ref/swift/Method/request(_:baseUrl:success:fail:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9APIClientAAC7request_7baseUrl7success4failSo20NSURLSessionDataTaskCq__10Foundation3URLVSgyxcys5Error_pct6ResultAA18URLResponseCapablePQy_RszAA21URLRequestConvertibleR_AaOR_r0_lF">request(_:<wbr>baseUrl:<wbr>success:<wbr>fail:<wbr>)</a>
+                    <a class="token" href="#/s:9APIClientAAC7request_7baseUrl7success4failSo20NSURLSessionDataTaskCAA8EndpointCyxG_10Foundation3URLVSgyxcys5Error_pctlF">request(_:<wbr>baseUrl:<wbr>success:<wbr>fail:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -274,13 +319,11 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="n">request</span><span class="o">&lt;</span><span class="kt">Response</span><span class="p">,</span> <span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span>
-    <span class="n">_</span> <span class="nv">requestConvertible</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="n">request</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">requestConvertible</span><span class="p">:</span> <span class="kt"><a href="../Classes/Endpoint.html">Endpoint</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="nv">baseUrl</span><span class="p">:</span> <span class="kt">URL</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
-    <span class="nv">success</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">,</span>
-    <span class="nv">fail</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span>
-    <span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/URLResponseCapable.html">URLResponseCapable</a></span><span class="p">,</span> <span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/URLRequestConvertible.html">URLRequestConvertible</a></span><span class="p">,</span> <span class="kt">T</span><span class="o">.</span><span class="kt">Result</span> <span class="o">==</span> <span class="kt">Response</span></code></pre>
+    <span class="nv">success</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">,</span>
+    <span class="nv">fail</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
 
                         </div>
                       </div>
@@ -290,9 +333,40 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9APIClientAAC7request_17additionalHeaders0C5Query7baseUrl7Combine12AnyPublisherVyxs5Error_pGq__SDyS2SGSgAM10Foundation3URLVSgt6ResultAA18URLResponseCapablePQy_RszAA21URLRequestConvertibleR_AaSR_r0_lF"></a>
+                    <a name="/s:9APIClientAAC7request_7baseUrl7handlerSo20NSURLSessionDataTaskCAA8EndpointCyxG_10Foundation3URLVSgys6ResultOyxs5Error_pGctlF"></a>
+                    <a name="//apple_ref/swift/Method/request(_:baseUrl:handler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClientAAC7request_7baseUrl7handlerSo20NSURLSessionDataTaskCAA8EndpointCyxG_10Foundation3URLVSgys6ResultOyxs5Error_pGctlF">request(_:<wbr>baseUrl:<wbr>handler:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">request</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">requestConvertible</span><span class="p">:</span> <span class="kt"><a href="../Classes/Endpoint.html">Endpoint</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="nv">baseUrl</span><span class="p">:</span> <span class="kt">URL</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClientAAC7request_17additionalHeaders0C5Query7baseUrl7Combine12AnyPublisherVyxs5Error_pGAA8EndpointCyxG_SDyS2SGSgAP10Foundation3URLVSgtlF"></a>
                     <a name="//apple_ref/swift/Method/request(_:additionalHeaders:additionalQuery:baseUrl:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9APIClientAAC7request_17additionalHeaders0C5Query7baseUrl7Combine12AnyPublisherVyxs5Error_pGq__SDyS2SGSgAM10Foundation3URLVSgt6ResultAA18URLResponseCapablePQy_RszAA21URLRequestConvertibleR_AaSR_r0_lF">request(_:<wbr>additionalHeaders:<wbr>additionalQuery:<wbr>baseUrl:<wbr>)</a>
+                    <a class="token" href="#/s:9APIClientAAC7request_17additionalHeaders0C5Query7baseUrl7Combine12AnyPublisherVyxs5Error_pGAA8EndpointCyxG_SDyS2SGSgAP10Foundation3URLVSgtlF">request(_:<wbr>additionalHeaders:<wbr>additionalQuery:<wbr>baseUrl:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -312,11 +386,10 @@ This makes no assumptions on what thread this should be called on. Usually just 
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">request</span><span class="o">&lt;</span><span class="kt">Response</span><span class="p">,</span> <span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">requestConvertible</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span>
-                                 <span class="n">additionalHeaders</span> <span class="nv">headers</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">String</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
-                                 <span class="n">additionalQuery</span> <span class="nv">queryParameters</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">String</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
-                                 <span class="nv">baseUrl</span><span class="p">:</span> <span class="kt">URL</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Response</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span>
-    <span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/URLResponseCapable.html">URLResponseCapable</a></span> <span class="o">&amp;</span> <span class="kt"><a href="../Protocols/URLRequestConvertible.html">URLRequestConvertible</a></span><span class="p">,</span> <span class="kt">T</span><span class="o">.</span><span class="kt">Result</span> <span class="o">==</span> <span class="kt">Response</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">request</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">requestConvertible</span><span class="p">:</span> <span class="kt"><a href="../Classes/Endpoint.html">Endpoint</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">,</span>
+                       <span class="n">additionalHeaders</span> <span class="nv">headers</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">String</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                       <span class="n">additionalQuery</span> <span class="nv">queryParameters</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">String</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                       <span class="nv">baseUrl</span><span class="p">:</span> <span class="kt">URL</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -363,7 +436,7 @@ This makes no assumptions on what thread this should be called on. Usually just 
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://github.com/DanielCardonaRojas/APIClient" target="_blank" rel="external">Daniel Cardona</a>. All rights reserved. (Last updated: 2021-02-11)</p>
+          <p>&copy; 2021 <a class="link" href="https://github.com/DanielCardonaRojas/APIClient" target="_blank" rel="external">Daniel Cardona</a>. All rights reserved. (Last updated: 2021-03-13)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
