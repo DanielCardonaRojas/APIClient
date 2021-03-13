@@ -12,7 +12,7 @@ import XCTest
 class APIClientTests: XCTestCase {
     let tBaseUrl = URL(string: "google.com")!
     var client: APIClient!
-    
+
     override func setUp() {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [MockURLProtocol.self]
@@ -39,17 +39,16 @@ class APIClientTests: XCTestCase {
 
         wait(for: [expectation], timeout: 2.0)
     }
-    
+
     func testCanParsePathAndQueryThroughURLComponents() {
         guard let components = URLComponents(string: "some/path?q=1&location=colombia") else {
-            XCTFail()
+            XCTFail("Cant parse with query params")
             return
         }
         XCTAssert(components.query != nil)
         XCTAssert(components.queryItems?.count ?? 0 == 2)
         XCTAssert(components.host == nil)
     }
-    
 
     @available(OSX 10.15, *)
     @available(iOS 13.0, *)
@@ -137,34 +136,31 @@ class APIClientTests: XCTestCase {
 
         wait(for: [expectation], timeout: 2.0)
     }
-    
+
     func testReturnsResponseOfRegisterMockClientHijacker() {
         let expectation = XCTestExpectation()
         let noHttpExpectation = XCTestExpectation(description: "Does not execute real request")
         noHttpExpectation.isInverted = true
-        
-        APIClientHijacker.sharedInstance.registerSubstitute(User.fake(), matchingRequestBy: .any)
-        
-        client.hijacker = APIClientHijacker.sharedInstance
-        
+
+        MockDataClientHijacker.sharedInstance.registerSubstitute(User.fake(), requestThatMatches: .any)
+
+        client.hijacker = MockDataClientHijacker.sharedInstance
+
         let endpoint = Endpoint<User>(method: .get, path: "/")
-        
+
         MockURLProtocol.requestHandler = { _ in
             noHttpExpectation.fulfill()
             return HTTPURLResponse.fakeResponseFrom(statusCode: 401)
         }
-        
+
         client.request(endpoint, success: { response in
-            if (response == User.fake()) {
+            if response == User.fake() {
                 expectation.fulfill()
             }
-        }, fail: { error in
-            
+        }, fail: { _ in
+
         })
 
         wait(for: [expectation], timeout: 1.0)
     }
-    
-
 }
-

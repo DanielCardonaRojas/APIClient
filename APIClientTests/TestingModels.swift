@@ -20,3 +20,19 @@ struct PostDetail: Codable {
     let body: String
     let comments: [String]
 }
+
+struct User: Codable, Equatable {
+    let name: String
+
+    static func fake() -> User {
+        return User(name: "FakeUser")
+    }
+}
+
+struct Pet: Codable, Equatable {
+    let name: String
+
+    static func fake() -> Pet {
+        return Pet(name: "FakeUser")
+    }
+}

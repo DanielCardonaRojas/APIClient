@@ -10,106 +10,100 @@ import XCTest
 import Foundation
 @testable import APIClient
 
-struct User: Codable, Equatable {
-    let name: String
-    
-    static func fake() -> User {
-        return User(name: "FakeUser")
-    }
-}
-
-struct Pet: Codable, Equatable {
-    let name: String
-    
-    static func fake() -> Pet {
-        return Pet(name: "FakeUser")
-    }
-}
-
 class MockAPIClientTests: XCTestCase {
-    var sut: APIClientHijacker!
-    
+    var sut: MockDataClientHijacker!
+
     override func setUp() {
-        sut = APIClientHijacker.sharedInstance
+        sut = MockDataClientHijacker.sharedInstance
     }
-    
+
     override func tearDown() {
         sut.clear()
     }
-    
+
     func testCanregisterSubstituteMatcherMatchingAllEndpointOfType() {
-        sut.registerSubstitute(User.fake(), matchingRequestBy: .any)
+        sut.registerSubstitute(User.fake(), requestThatMatches: .any)
         let endpoint = Endpoint<User>(method: .get, path: "/")
         let substitute = sut.hijack(endpoint: endpoint)
         XCTAssert(substitute != nil)
         XCTAssert(User.fake() ~= substitute!)
     }
-    
+
     func testMatchMethodReturnsNilForUnregisterSubstituteedType() {
-        sut.registerSubstitute(User.fake(), matchingRequestBy: .any)
+        sut.registerSubstitute(User.fake(), requestThatMatches: .any)
         let endpoint = Endpoint<Pet>(method: .get, path: "/")
         let substitute = sut.hijack(endpoint: endpoint)
         XCTAssert(substitute == nil)
     }
-    
+
     func testCanRegistherMatcherMatchingMethod() {
-        sut.registerSubstitute(User.fake(), matchingRequestBy: .method(.post))
+        sut.registerSubstitute(User.fake(), requestThatMatches: .method(.post))
         let endpoint = Endpoint<User>(method: .post, path: "/")
         let substitute = sut.hijack(endpoint: endpoint)
         XCTAssert(substitute != nil)
         XCTAssert(User.fake() ~= substitute!)
-        
+
     }
-    
+
     func testSubstituteIsNilWhenMatchKindIsMethodAndDoesNotMatchEndpointMethod() {
-        sut.registerSubstitute(User.fake(), matchingRequestBy: .method(.post))
+        sut.registerSubstitute(User.fake(), requestThatMatches: .method(.post))
         let endpoint = Endpoint<User>(method: .get, path: "/")
         let substitute = sut.hijack(endpoint: endpoint)
         XCTAssert(substitute == nil)
     }
-    
+
     func testCanMatchPath() {
-        sut.registerSubstitute(User.fake(), matchingRequestBy: .path("/users/1"))
+        sut.registerSubstitute(User.fake(), requestThatMatches: .path("/users/1"))
         let endpoint = Endpoint<User>(method: .post, path: "/users/1")
         let substitute = sut.hijack(endpoint: endpoint)
         XCTAssert(substitute != nil)
         XCTAssert(User.fake() ~= substitute!)
     }
-    
+
     func testReturnsNilWhenPathDoesNothijack() {
-        sut.registerSubstitute(User.fake(), matchingRequestBy: .path("/users/1"))
+        sut.registerSubstitute(User.fake(), requestThatMatches: .path("/users/1"))
         let endpoint = Endpoint<User>(method: .post, path: "/admins/1")
         let substitute = sut.hijack(endpoint: endpoint)
         XCTAssert(substitute == nil)
     }
-    
+
     func testCanMatchPathSegment() {
-        sut.registerSubstitute(User.fake(), matchingRequestBy: .path("/users/*"))
+        sut.registerSubstitute(User.fake(), requestThatMatches: .path("/users/*"))
         let endpoint = Endpoint<User>(method: .post, path: "/users/1")
         let substitute = sut.hijack(endpoint: endpoint)
         XCTAssert(substitute != nil)
         XCTAssert(User.fake() ~= substitute!)
     }
-    
+
     func testCanMatchPathWithRegex() {
-        sut.registerSubstitute(User.fake(), matchingRequestBy: .path(#"/.+/\d"#))
+        sut.registerSubstitute(User.fake(), requestThatMatches: .path(#"/.+/\d"#))
         let endpoint = Endpoint<User>(method: .post, path: "/users/1")
         let substitute = sut.hijack(endpoint: endpoint)
         XCTAssert(substitute != nil)
         XCTAssert(User.fake() ~= substitute!)
     }
+
+    func testCanLoadJsonMockFileAndRegisterIntoHijacker() {
+        let didRegister = sut.registerJsonFileContentSubstitute(for: [Post].self,
+                                              requestThatMatches: .any,
+                                              bundle: Bundle(for: MockURLProtocol.self),
+                                              fileName: "posts.json")
+
+        XCTAssert(didRegister)
+
+    }
+
 }
 
-
 extension Result where Success: Equatable {
-    
-    static func ~=(lhs: Success, rhs: Result) -> Bool {
+
+    static func ~= (lhs: Success, rhs: Result) -> Bool {
         switch rhs {
-        case .failure(_):
+        case .failure:
             return false
         case .success(let value):
             return lhs == value
         }
-        
+
     }
 }

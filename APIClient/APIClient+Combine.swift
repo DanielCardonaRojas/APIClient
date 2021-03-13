@@ -28,17 +28,15 @@ extension APIClient {
      
      */
     public func request<T>(_ requestConvertible: Endpoint<T>,
-                                     additionalHeaders headers: [String: String]? = nil,
-                                     additionalQuery queryParameters: [String: String]? = nil,
-                                     baseUrl: URL? = nil) -> AnyPublisher<T, Error>
-        {
+                           additionalHeaders headers: [String: String]? = nil,
+                           additionalQuery queryParameters: [String: String]? = nil,
+                           baseUrl: URL? = nil) -> AnyPublisher<T, Error> {
 
             var httpRequest = requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
             let additionalQueryItems = queryParameters?.map({ (k, v) in URLQueryItem(name: k, value: v) }) ?? []
             httpRequest.allHTTPHeaderFields = headers
             httpRequest.addQueryItems(additionalQueryItems)
-        
-        
+
             if let hijackingClient = hijacker, let match = hijackingClient.hijack(endpoint: requestConvertible) {
                 return Future { promise in
                     promise(match)

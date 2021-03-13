@@ -36,7 +36,7 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
     /// A type representing the encoding to be used for request body
     public enum Encoding {
         case formUrlEncoded, jsonEncoded
-        
+
         /// The mime type assocciated with this encoding that will be placed in the Content-Type header
         var mimeType: String {
             switch self {
@@ -53,14 +53,14 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
 
     let method: Method
     let path: Path
-    
+
     public private(set) var headers: Headers?
     public private(set) var queryParameters: QueryParams?
     private var body: Data?
 
     init(method: Method, path: Path) {
         self.method = method
-        
+
         if let components = URLComponents(string: path), let params = components.queryItems {
             self.path = components.path
             self.queryParameters = QueryParams(uniqueKeysWithValues: params.map({ ($0.name, $0.value) }))
@@ -116,7 +116,7 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
         self.body = data
         return addHeader("Content-Type", value: Encoding.jsonEncoded.mimeType)
     }
-    
+
     /// Adds a json payload to body from a dictionary
     ///
     /// Note this will also set the content-type to application/json
@@ -158,15 +158,15 @@ public class RequestBuilder: CustomStringConvertible, CustomDebugStringConvertib
         self.queryParameters = query
         return self
     }
-    
+
     /// Adds multiple query paramater pairs to url
     public func query(_ queryItems: [URLQueryItem]?) -> RequestBuilder {
         guard let queryItems = queryItems else {
             return self
         }
-        
+
         if queryParameters == nil { queryParameters = [:] }
-        
+
         for query in queryItems {
             queryParameters?[query.name] = query.value
         }

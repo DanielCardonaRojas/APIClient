@@ -41,7 +41,7 @@ public protocol URLResponseCapable {
 public class APIClient {
 
     internal var baseURL: URL
-    
+
     /// An object conforming to MockClient which can ihijack request and return
     /// the expected response or errors prematurily
     var hijacker: ClientHijacker?
@@ -100,7 +100,7 @@ public class APIClient {
         baseUrl: URL? = nil,
         success: @escaping (T) -> Void,
         fail: @escaping (Error) -> Void) -> URLSessionDataTask {
-        
+
         request(requestConvertible, handler: { result in
             switch result {
             case .failure(let error):
@@ -109,20 +109,20 @@ public class APIClient {
                 success(response)
             }
         })
-        
+
     }
-    
+
     public func request<T>(
         _ requestConvertible: Endpoint<T>,
         baseUrl: URL? = nil,
         handler: @escaping (Result<T, Error>) -> Void
     ) -> URLSessionDataTask {
             var httpRequest = requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
-        
+
             if let hijackingClient = hijacker, let match = hijackingClient.hijack(endpoint: requestConvertible) {
                 handler(match)
             }
-            
+
             for (header, value) in additionalHeaders {
                 httpRequest.addValue(value, forHTTPHeaderField: header)
             }

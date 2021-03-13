@@ -9,7 +9,7 @@
 import Foundation
 
 /// RequestMatcher represents, different ways to find matches agains a request
-public enum RequestMatcher: Hashable {
+public enum RequestMatchingCriteria: Hashable {
     case any
     case method(RequestBuilder.Method)
 
@@ -30,19 +30,19 @@ public struct MockedError: Error {
     let description: String
 }
 
-struct Config: Hashable {
-    let kind: RequestMatcher
-    let typeString: String
-
-    init<T>(_ type: T.Type, kind: RequestMatcher) {
-        self.kind = kind
-        self.typeString = "\(T.self)"
-    }
-}
-
-/// A ClientHijacker implementation that can register response substitutes and
-/// errors in memory.
+/// A ClientHijacker implementation that can register
+/// fake response substitutes and errors in memory.
 public class MockDataClientHijacker: ClientHijacker {
+
+    struct Config: Hashable {
+        let kind: RequestMatchingCriteria
+        let typeString: String
+
+        init<T>(_ type: T.Type, kind: RequestMatchingCriteria) {
+            self.kind = kind
+            self.typeString = "\(T.self)"
+        }
+    }
 
     static let sharedInstance = MockDataClientHijacker()
 
@@ -58,35 +58,64 @@ public class MockDataClientHijacker: ClientHijacker {
 
     private var store: [Config: RequestHijacker<Any>] = [:]
 
-    /// Registers a hijacker that will error out with the provided error message
-    public func registerSubstitute<T>(_ substitute: T, matchingRequestBy matching: RequestMatcher) {
-        let config = Config(T.self, kind: matching)
-        store[config] = Self.createSubstitueHijacker(substitute: substitute, kind: matching)
+    /**
+     Registers a hijacker with a substitute value
+     
+       - Parameter substitute: The value that will impostor the response expectation
+       - Parameter criteria: How outgoing requests will be matched on
+     
+     */
+    public func registerSubstitute<T>(_ substitute: T, requestThatMatches criteria: RequestMatchingCriteria) {
+        let config = Config(T.self, kind: criteria)
+        store[config] = Self.createSubstitueHijacker(substitute: substitute, kind: criteria)
     }
 
+    /**
+     Registers a hijacker that will read from file and store the substitute
+     
+       - Parameter bundle: Bundle to read the file from
+       - Parameter fileName: The file name to read and parse
+       - Parameter type: The type of the response expectation that will determing how to parse the file
+       - Parameter criteria: How outgoing requests will be matched on
+     
+     */
     @discardableResult
     public func registerJsonFileContentSubstitute<T: Decodable>(for type: T.Type,
-                                                                requestThatMatches criteria: RequestMatcher,
+                                                                requestThatMatches criteria: RequestMatchingCriteria,
                                                                 bundle: Bundle,
                                                                 fileName: String) -> Bool {
         let fileBundle = bundle
 
-        guard
-            let url = fileBundle.resourceURL?.appendingPathComponent(fileName),
-            let data = try? Data(contentsOf: URL(fileURLWithPath: url.path)),
-            let parsed = try? JSONDecoder().decode(T.self, from: data)
-        else {
-                return false
+        guard let url = fileBundle.resourceURL?.appendingPathComponent(fileName) else {
+            return false
         }
 
-        registerSubstitute(parsed, matchingRequestBy: criteria)
+        do {
+            let data = try Data(contentsOf: URL(fileURLWithPath: url.path))
+            let parsed = try JSONDecoder().decode(T.self, from: data)
+            registerSubstitute(parsed, requestThatMatches: criteria)
+        } catch let error {
+            registerError("Failed loading file content reason: \(error.localizedDescription)",
+                          for: T.self,
+                          requestThatMatches: criteria)
+            return false
+        }
+
         return true
+
     }
 
-    /// Registers a hijacker that will error out with the provided error message
-    public func registerError<T>(_ error: String, for type: T.Type, matching: RequestMatcher) {
-        let config = Config(T.self, kind: matching)
-        store[config] = Self.createErrorHijacker(T.self, error: error, kind: matching)
+    /**
+     Registers a hijacker that will error out with the provided error message
+     
+       - Parameter error: A error message that will be wrapped in a MockedError
+       - Parameter type: The type of the response expectation that this applies to
+       - Parameter criteria: How outgoing requests will be matched on
+     
+     */
+    public func registerError<T>(_ error: String, for type: T.Type, requestThatMatches criteria: RequestMatchingCriteria) {
+        let config = Config(T.self, kind: criteria)
+        store[config] = Self.createErrorHijacker(T.self, error: error, kind: criteria)
     }
 
     public func hijack<T>(endpoint: Endpoint<T>) -> Result<T, Error>? {
@@ -114,13 +143,13 @@ public class MockDataClientHijacker: ClientHijacker {
         }
     }
 
-    private static func createErrorHijacker<T>(_ type: T.Type, error: String, kind: RequestMatcher) -> RequestHijacker<T> {
+    private static func createErrorHijacker<T>(_ type: T.Type, error: String, kind: RequestMatchingCriteria) -> RequestHijacker<T> {
         { _ in
             throw MockedError(description: error)
         }
     }
 
-    private static func createSubstitueHijacker<T>(substitute: T, kind: RequestMatcher) -> RequestHijacker<T> {
+    private static func createSubstitueHijacker<T>(substitute: T, kind: RequestMatchingCriteria) -> RequestHijacker<T> {
         return { (builder: RequestBuilder) in
             switch kind {
             case .any:
