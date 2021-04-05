@@ -98,4 +98,18 @@ public struct APIClientPublisher<Response>: Publisher {
 
         return APIClientPublisher<T>(publisher: newPublisher.eraseToAnyPublisher(), client: client)
     }
+
+    /**
+     Collect the response from 2 subsequent requests
+     - Parameter pipe: A closure receiving `Endpoint.Result` of the current endpoint and returning a new endpoint from that
+     */
+    public func collect<T>(_ pipe: @escaping (Response) -> Endpoint<T>) -> APIClientPublisher<(Response, T)> {
+        let newPublisher = publisher.flatMap({ (response: Response) -> AnyPublisher<(Response, T), Error> in
+            let nextEndpoint = pipe(response)
+            let nextRequest = client.request(nextEndpoint)
+            return nextRequest.map({ (response, $0) }).eraseToAnyPublisher()
+        }).eraseToAnyPublisher()
+
+        return APIClientPublisher<(Response, T)>(publisher: newPublisher.eraseToAnyPublisher(), client: client)
+    }
 }

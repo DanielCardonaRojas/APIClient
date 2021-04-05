@@ -40,22 +40,6 @@ public final class Endpoint<Response>: CustomStringConvertible, CustomDebugStrin
     }
 
     /**
-     Transform Endpoint into a new one
-
-      - Parameter f: Closure used to modify the reponse type.
-     
-      This is handy when you want to select a portion of the http response, e.g when the data of interest is
-      enveloped by meta data.
-
-     */
-    public func map<N>(_ f: @escaping ((Response) throws -> N)) -> Endpoint<N> {
-        let newDecodingFuntion: (Data) throws -> N = { data in
-            return try f(self.decode(data))
-        }
-        return Endpoint<N>(builder: self.builder, decode: newDecodingFuntion)
-    }
-
-    /**
      Modify the underlying request builder ad-hoc
      - Parameter f: A function that further configures the http request
      */

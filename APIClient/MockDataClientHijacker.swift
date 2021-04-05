@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 /// RequestMatcher represents, different ways to find matches agains a request
 public enum RequestMatchingCriteria: Hashable {
     case any
@@ -15,6 +14,33 @@ public enum RequestMatchingCriteria: Hashable {
 
     /// Path string or regex in escaped string e.g `#"/posts/\d"#`
     case path(String)
+
+    func match(_ builder: RequestBuilder) -> Bool {
+        switch self {
+        case .any:
+            return true
+        case .method(let method):
+            return builder.method == method
+        case .path(let path):
+            return builder.path ~= path
+        }
+    }
+}
+
+struct EndpointMatcher: Hashable {
+    let requestCriteria: RequestMatchingCriteria
+    let typeString: String
+
+    init<T>(_ type: T.Type, requestMatchingCriteria: RequestMatchingCriteria) {
+        typeString = String(describing: T.self)
+        requestCriteria = requestMatchingCriteria
+    }
+
+    func match<T>(_ endpoint: Endpoint<T>) -> Bool {
+        let matchesRequest = requestCriteria.match(endpoint.builder)
+        return "\(T.self)" == typeString
+    }
+
 }
 
 /// An object that can hijack outgoing requests and return either the expected response type
@@ -34,16 +60,6 @@ public struct MockedError: Error {
 /// fake response substitutes and errors in memory.
 public class MockDataClientHijacker: ClientHijacker {
 
-    struct Config: Hashable {
-        let kind: RequestMatchingCriteria
-        let typeString: String
-
-        init<T>(_ type: T.Type, kind: RequestMatchingCriteria) {
-            self.kind = kind
-            self.typeString = "\(T.self)"
-        }
-    }
-
     public static let sharedInstance = MockDataClientHijacker()
 
     typealias RequestHijacker<T> = (RequestBuilder) throws -> T?
@@ -56,7 +72,7 @@ public class MockDataClientHijacker: ClientHijacker {
         store = [:]
     }
 
-    private var store: [Config: RequestHijacker<Any>] = [:]
+    private var store: [EndpointMatcher: RequestHijacker<Any>] = [:]
 
     /**
      Registers a hijacker with a substitute value
@@ -65,9 +81,9 @@ public class MockDataClientHijacker: ClientHijacker {
        - Parameter criteria: How outgoing requests will be matched on
      
      */
-    public func registerSubstitute<T>(_ substitute: T, requestThatMatches criteria: RequestMatchingCriteria) {
-        let config = Config(T.self, kind: criteria)
-        store[config] = Self.createSubstitueHijacker(substitute: substitute, kind: criteria)
+    public func registerSubstitute<T>(_ substitute: T, requestThatMatches criteria: RequestMatchingCriteria, typed: Bool = true) {
+        let config = EndpointMatcher(T.self, requestMatchingCriteria: criteria)
+        store[config] = Self.createSubstituteHijacker(substitute: substitute, kind: criteria)
     }
 
     /**
@@ -114,21 +130,22 @@ public class MockDataClientHijacker: ClientHijacker {
      
      */
     public func registerError<T>(_ error: String, for type: T.Type, requestThatMatches criteria: RequestMatchingCriteria) {
-        let config = Config(T.self, kind: criteria)
+        let config = EndpointMatcher(T.self, requestMatchingCriteria: criteria)
         store[config] = Self.createErrorHijacker(T.self, error: error, kind: criteria)
     }
 
     public func hijack<T>(endpoint: Endpoint<T>) -> Result<T, Error>? {
         guard
-            let config = store.keys.first(where: { $0.typeString == "\(T.self)" }),
+            let config = store.keys.first(where: { $0.match(endpoint) }),
             let entry = store[config]
             else {
             return nil
         }
 
         let result: Result<T?, Error> = Result(catching: {
-            let substitute = try entry(endpoint.builder) as? T
-            return substitute
+            let substitute = try entry(endpoint.builder)
+            let casted = substitute as? T
+            return casted
         })
 
         switch result {
@@ -149,19 +166,11 @@ public class MockDataClientHijacker: ClientHijacker {
         }
     }
 
-    private static func createSubstitueHijacker<T>(substitute: T, kind: RequestMatchingCriteria) -> RequestHijacker<T> {
+    private static func createSubstituteHijacker<T>(substitute: T, kind: RequestMatchingCriteria) -> RequestHijacker<T> {
         return { (builder: RequestBuilder) in
-            switch kind {
-            case .any:
-                return substitute
-            case .method(let method):
-                return builder.method == method ? substitute : nil
-            case .path(let path):
-                return builder.path ~= path ? substitute : nil
-            }
-
+            let foundMatch = kind.match(builder)
+            return foundMatch ? substitute : nil
         }
-
     }
 
 }

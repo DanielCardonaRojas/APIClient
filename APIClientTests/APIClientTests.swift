@@ -7,16 +7,22 @@
 //
 
 import XCTest
+import Combine
 @testable import APIClient
 
 class APIClientTests: XCTestCase {
     let tBaseUrl = URL(string: "google.com")!
     var client: APIClient!
+    var mockData: MockDataClientHijacker!
+    var disposables: Set<AnyCancellable>!
 
     override func setUp() {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [MockURLProtocol.self]
         client = APIClient(baseURL: tBaseUrl, configuration: configuration)
+        mockData = MockDataClientHijacker()
+        client.hijacker = mockData
+        disposables = Set()
     }
 
     func testBadStatusCodeIsTransformedIntoError() {
@@ -142,9 +148,7 @@ class APIClientTests: XCTestCase {
         let noHttpExpectation = XCTestExpectation(description: "Does not execute real request")
         noHttpExpectation.isInverted = true
 
-        MockDataClientHijacker.sharedInstance.registerSubstitute(User.fake(), requestThatMatches: .any)
-
-        client.hijacker = MockDataClientHijacker.sharedInstance
+        mockData.registerSubstitute(User.fake(), requestThatMatches: .any)
 
         let endpoint = Endpoint<User>(method: .get, path: "/")
 
@@ -162,5 +166,29 @@ class APIClientTests: XCTestCase {
         })
 
         wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testCanMockResponseOfChainedRequests() {
+        let hijacksBothRequests = XCTestExpectation()
+        let mockUser = User.fake()
+        let mockPet = Pet.fake()
+
+        mockData.registerSubstitute(mockUser, requestThatMatches: .any)
+        mockData.registerSubstitute(mockPet, requestThatMatches: .any)
+
+        let endpoint = Endpoint<User>(method: .get, path: "/")
+        let endpoint2 = Endpoint<Pet>(method: .get, path: "/user/pets")
+
+        APIClientPublisher(client: client, endpoint: endpoint).collect({ _ in
+           endpoint2
+        }).receive(on: RunLoop.main).sink(receiveCompletion: { _ in
+        }, receiveValue: { tuple in
+            if tuple.0 == mockUser && tuple.1 == mockPet {
+                hijacksBothRequests.fulfill()
+            }
+        }).store(in: &disposables)
+
+        wait(for: [hijacksBothRequests], timeout: 3.0)
+
     }
 }
