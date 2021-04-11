@@ -84,9 +84,10 @@ class MockAPIClientTests: XCTestCase {
     }
 
     func testCanLoadJsonMockFileAndRegisterIntoHijacker() {
+        let bundle = Bundle.module(for: MockURLProtocol.self)
         let didRegister = sut.registerJsonFileContentSubstitute(for: [Post].self,
                                               requestThatMatches: .any,
-                                              bundle: Bundle(for: MockURLProtocol.self),
+                                              bundle: bundle,
                                               fileName: "posts.json")
 
         XCTAssert(didRegister)

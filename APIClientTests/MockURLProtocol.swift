@@ -65,14 +65,7 @@ extension HTTPURLResponse {
     static func fakeResponseFrom(file: String, in bundle: Bundle? =  nil, statusCode: Int = 200) -> (HTTPURLResponse, Data?) {
         let  response  =  HTTPURLResponse(url: URL(string: "https://jsonplaceholder.typicode.com")!, statusCode: statusCode, httpVersion: nil, headerFields: nil)!
 
-        let fileBundle = bundle ?? Bundle(for: MockURLProtocol.self)
-
-        guard
-            let url = fileBundle.resourceURL?.appendingPathComponent(file) else {
-                return (response, nil)
-        }
-
-        let data = try? Data(contentsOf: URL(fileURLWithPath: url.path))
-        return (response, data)
+        let targetBundle = bundle ?? Bundle.module
+        return (response, try? targetBundle.dataFor(file))
     }
 }

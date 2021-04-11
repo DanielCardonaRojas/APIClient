@@ -7,6 +7,11 @@
 //
 
 import Foundation
+
+#if SWIFT_PACKAGE
+import Utils
+#endif
+
 /// RequestMatcher represents, different ways to find matches agains a request
 public enum RequestMatchingCriteria: Hashable {
     case any
@@ -98,16 +103,12 @@ public class MockDataClientHijacker: ClientHijacker {
     @discardableResult
     public func registerJsonFileContentSubstitute<T: Decodable>(for type: T.Type,
                                                                 requestThatMatches criteria: RequestMatchingCriteria,
-                                                                bundle: Bundle,
+                                                                bundle: Bundle? = nil,
                                                                 fileName: String) -> Bool {
-        let fileBundle = bundle
-
-        guard let url = fileBundle.resourceURL?.appendingPathComponent(fileName) else {
-            return false
-        }
-
+        let fileBundle = bundle ?? Bundle.module
+        
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: url.path))
+            let data = try fileBundle.dataFor(fileName)
             let parsed = try JSONDecoder().decode(T.self, from: data)
             registerSubstitute(parsed, requestThatMatches: criteria)
         } catch let error {
