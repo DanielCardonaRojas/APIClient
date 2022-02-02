@@ -42,6 +42,14 @@ class ViewController: UIViewController {
         }, receiveValue: { value in
             print("\(value)")
         }).store(in: &disposables)
+        
+        // Async Await
+        if #available(iOS 15.0, *) {
+            Task {
+                let result = try await client.request(endpoint)
+                print(result)
+            }
+        }
     }
 
 }

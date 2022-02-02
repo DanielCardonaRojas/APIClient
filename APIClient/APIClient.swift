@@ -87,10 +87,10 @@ public class APIClient {
 
     @discardableResult
     /**
-     Executes an http request.
+     Executes the http request associated with an Endpoint
      
      - Parameter requestConvertible: Object conforming to URLResponseCapable & URLRequestConvertible (usually Endpoint)
-     - Parameter baseUrl: Ovewrite the base url for this request.
+     - Parameter baseUrl: Overwrite the base url for this request.
      - Parameter success: Callback for when response is as expected.
      - Parameter fail: Callback for when status code is not in 200 range, failed to parse or other exception has ocurred.
      
@@ -111,7 +111,58 @@ public class APIClient {
         })
 
     }
+    
+    /**
+     Executes the http request associated with an Endpoint
+     
+     - Parameter requestConvertible: Endpoint specification
+     - Parameter baseUrl: Overwrite the base url for this request.
+     - Returns: Response type as especified by endpoint object
+     - Throws: NetworkError for bad status codes
+     */
+    @available(iOS 15.0.0, *)
+    public func request<T>(
+        _ requestConvertible: Endpoint<T>,
+        baseUrl: URL? = nil
+    ) async throws -> T {
+        
+        var httpRequest = requestConvertible.asURLRequest(baseURL: baseUrl ?? self.baseURL)
+        
+        if let hijackingClient = hijacker, let match = hijackingClient.hijack(endpoint: requestConvertible) {
+            return try match.get()
+        }
+        
+        // insert additional headers
+        for (header, value) in additionalHeaders {
+            httpRequest.addValue(value, forHTTPHeaderField: header)
+        }
+        
+        // perform request
+        let (data, response) = try await session.data(for: httpRequest, delegate: nil)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NSError()
+        }
+        
+        // convert status code into error if required
+        if !httpResponse.isOK {
+            let statusCodeError = NetworkError(statusCode: httpResponse.statusCode, data: data)
+            throw statusCodeError
+        }
+        
+        // Parse into codable
+        let parsedResponse = try requestConvertible.handle(data: data)
+        return parsedResponse
+        
+    }
 
+    /**
+     Executes the http request associated with an Endpoint
+     
+     - Parameter requestConvertible: Object conforming to URLResponseCapable & URLRequestConvertible (usually Endpoint)
+     - Parameter baseUrl: Overwrite the base url for this request.
+     - Parameter handler: void callback handling a Result<T, Error>
+     */
     public func request<T>(
         _ requestConvertible: Endpoint<T>,
         baseUrl: URL? = nil,
