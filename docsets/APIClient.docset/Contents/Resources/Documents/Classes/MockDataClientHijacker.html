@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MockDataClientHijacker Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/MockDataClientHijacker" class="dashAnchor"></a>
+    <a title="MockDataClientHijacker Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">APIClient 1.0.1 Docs</a> (71% documented)</p>
+        <div class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </div>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">APIClient Reference</a>
+        <img id="carat" src="../img/carat.png" alt=""/>
+        MockDataClientHijacker Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/APIClient.html">APIClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Endpoint.html">Endpoint</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MockDataClientHijacker.html">MockDataClientHijacker</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RequestBuilder.html">RequestBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RequestBuilder/Method.html">– Method</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RequestBuilder/Encoding.html">– Encoding</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/RequestMatchingCriteria.html">RequestMatchingCriteria</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/URLRequest.html">URLRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ClientHijacker.html">ClientHijacker</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/URLRequestConvertible.html">URLRequestConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/URLResponseCapable.html">URLResponseCapable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/APIClientPublisher.html">APIClientPublisher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:9APIClient11MockedErrorV">MockedError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:9APIClient12NetworkErrorV">NetworkError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9APIClient4Patha">Path</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>MockDataClientHijacker</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MockDataClientHijacker</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ClientHijacker.html">ClientHijacker</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>A ClientHijacker implementation that can register
+fake response substitutes and errors in memory.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClient22MockDataClientHijackerC14sharedInstanceACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/sharedInstance" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient22MockDataClientHijackerC14sharedInstanceACvpZ">sharedInstance</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">sharedInstance</span><span class="p">:</span> <span class="kt">MockDataClientHijacker</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClient22MockDataClientHijackerCACycfc"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient22MockDataClientHijackerCACycfc">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClient22MockDataClientHijackerC5clearyyF"></a>
+                    <a name="//apple_ref/swift/Method/clear()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient22MockDataClientHijackerC5clearyyF">clear()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">clear</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClient22MockDataClientHijackerC18registerSubstitute_18requestThatMatchesyx_AA23RequestMatchingCriteriaOtlF"></a>
+                    <a name="//apple_ref/swift/Method/registerSubstitute(_:requestThatMatches:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient22MockDataClientHijackerC18registerSubstitute_18requestThatMatchesyx_AA23RequestMatchingCriteriaOtlF">registerSubstitute(_:<wbr>requestThatMatches:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Registers a hijacker with a substitute value</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">registerSubstitute</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">substitute</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">requestThatMatches</span> <span class="nv">criteria</span><span class="p">:</span> <span class="kt"><a href="../Enums/RequestMatchingCriteria.html">RequestMatchingCriteria</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>substitute</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The value that will impostor the response expectation</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>criteria</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>How outgoing requests will be matched on</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClient22MockDataClientHijackerC33registerJsonFileContentSubstitute3for18requestThatMatches6bundle8fileNameSbxm_AA23RequestMatchingCriteriaOSo8NSBundleCSStSeRzlF"></a>
+                    <a name="//apple_ref/swift/Method/registerJsonFileContentSubstitute(for:requestThatMatches:bundle:fileName:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient22MockDataClientHijackerC33registerJsonFileContentSubstitute3for18requestThatMatches6bundle8fileNameSbxm_AA23RequestMatchingCriteriaOSo8NSBundleCSStSeRzlF">registerJsonFileContentSubstitute(for:<wbr>requestThatMatches:<wbr>bundle:<wbr>fileName:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Registers a hijacker that will read from file and store the substitute</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="n">registerJsonFileContentSubstitute</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Decodable</span><span class="o">&gt;</span><span class="p">(</span><span class="k">for</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span>
+                                                            <span class="n">requestThatMatches</span> <span class="nv">criteria</span><span class="p">:</span> <span class="kt"><a href="../Enums/RequestMatchingCriteria.html">RequestMatchingCriteria</a></span><span class="p">,</span>
+                                                            <span class="nv">bundle</span><span class="p">:</span> <span class="kt">Bundle</span><span class="p">,</span>
+                                                            <span class="nv">fileName</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>bundle</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Bundle to read the file from</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fileName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The file name to read and parse</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of the response expectation that will determing how to parse the file</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>criteria</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>How outgoing requests will be matched on</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClient22MockDataClientHijackerC13registerError_3for18requestThatMatchesySS_xmAA23RequestMatchingCriteriaOtlF"></a>
+                    <a name="//apple_ref/swift/Method/registerError(_:for:requestThatMatches:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient22MockDataClientHijackerC13registerError_3for18requestThatMatchesySS_xmAA23RequestMatchingCriteriaOtlF">registerError(_:<wbr>for:<wbr>requestThatMatches:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Registers a hijacker that will error out with the provided error message</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">registerError</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="k">for</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">requestThatMatches</span> <span class="nv">criteria</span><span class="p">:</span> <span class="kt"><a href="../Enums/RequestMatchingCriteria.html">RequestMatchingCriteria</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A error message that will be wrapped in a MockedError</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of the response expectation that this applies to</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>criteria</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>How outgoing requests will be matched on</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9APIClient14ClientHijackerP6hijack8endpoints6ResultOyqd__s5Error_pGSgAA8EndpointCyqd__G_tlF"></a>
+                    <a name="//apple_ref/swift/Method/hijack(endpoint:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9APIClient14ClientHijackerP6hijack8endpoints6ResultOyqd__s5Error_pGSgAA8EndpointCyqd__G_tlF">hijack(endpoint:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">hijack</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">endpoint</span><span class="p">:</span> <span class="kt"><a href="../Classes/Endpoint.html">Endpoint</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Result</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2022 <a class="link" href="https://github.com/DanielCardonaRojas/APIClient" target="_blank" rel="external noopener">Daniel Cardona</a>. All rights reserved. (Last updated: 2022-02-02)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>
